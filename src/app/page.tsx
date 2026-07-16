@@ -19,6 +19,9 @@ export default function Home() {
           </svg>
         </div>
 
+        <p className="mb-2 text-sm font-medium uppercase tracking-widest text-emerald-500">
+          Hello World
+        </p>
         <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
           MedSync
         </h1>
