@@ -1,0 +1,80 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # --- lint / typecheck / unit tests -----------------------------------------
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.33.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Lint
+        run: pnpm run lint
+      - name: Typecheck
+        run: pnpm run typecheck
+      - name: Unit tests (packages + web)
+        run: pnpm run test
+      - name: Edge Function handler tests
+        run: node --experimental-strip-types --test "supabase/functions/**/*.test.mjs"
+
+  # --- database: migrations + RLS probes + seed idempotency ------------------
+  # This job is the point of the whole gate: CI runs the ACTUAL RLS probes and
+  # the seed idempotency check against a real Postgres, not only unit tests.
+  db-probes:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      PGHOST: localhost
+      PGPORT: "5432"
+      PGUSER: postgres
+      PGPASSWORD: postgres
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install psql client
+        run: sudo apt-get update && sudo apt-get install -y postgresql-client
+      - name: Migrations + RLS probes (asserts cross-tenant denial, audit immutability)
+        run: bash supabase/_local/run-db-tests.sh ci_probes
+      - name: Rollback cycle (apply -> rollback -> re-apply)
+        run: bash supabase/_local/rollback-check.sh ci_rollback
+      - name: Seed idempotency + production guard
+        run: |
+          set -euo pipefail
+          psql -d postgres -v ON_ERROR_STOP=1 -c "drop database if exists ci_seed;" -c "create database ci_seed;"
+          psql -d ci_seed -v ON_ERROR_STOP=1 -f supabase/_local/00_supabase_shim.sql
+          for f in supabase/migrations/*.sql; do psql -d ci_seed -v ON_ERROR_STOP=1 -f "$f"; done
+          MEDSYNC_ENV=development bash supabase/_local/seed.sh ci_seed
+          H1=$(psql -tA -d ci_seed -c "select md5(string_agg(key,'|' order by key)) from (select key from public.cadres union all select key from public.councils union all select key from public.sub_specialties) x")
+          MEDSYNC_ENV=development bash supabase/_local/seed.sh ci_seed
+          H2=$(psql -tA -d ci_seed -c "select md5(string_agg(key,'|' order by key)) from (select key from public.cadres union all select key from public.councils union all select key from public.sub_specialties) x")
+          test "$H1" = "$H2" || { echo "seed not idempotent"; exit 1; }
+          if MEDSYNC_ENV=production bash supabase/_local/seed.sh ci_seed 2>&1 | grep -q "refusing to run the seed against a production"; then
+            echo "production guard OK"
+          else
+            echo "production guard FAILED"; exit 1
+          fi
