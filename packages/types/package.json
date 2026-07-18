@@ -2,7 +2,7 @@
   "name": "@medsync/types",
   "version": "0.1.0",
   "private": true,
-  "description": "Shared TS types + generated Supabase types. Filled in Gate 0.3.",
+  "description": "Shared TS types + generated Supabase types.",
   "type": "module",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
@@ -11,5 +11,8 @@
   },
   "scripts": {
     "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@medsync/db": "workspace:*"
   }
 }
