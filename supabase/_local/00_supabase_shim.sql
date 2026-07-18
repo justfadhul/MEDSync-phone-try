@@ -18,9 +18,10 @@ grant anon, authenticated, service_role to authenticator;
 create schema if not exists auth;
 
 -- auth.uid() reads the 'sub' claim from the request JWT claims GUC, exactly as
--- Supabase does. Returns null when unauthenticated (anon).
+-- Supabase does. Robust to the GUC being unset OR an empty string (e.g. after
+-- reset request.jwt.claims), returning null then rather than throwing on ''::jsonb.
 create or replace function auth.uid() returns uuid language sql stable as $$
-  select nullif(current_setting('request.jwt.claims', true)::jsonb ->> 'sub', '')::uuid;
+  select (nullif(current_setting('request.jwt.claims', true), '')::jsonb ->> 'sub')::uuid;
 $$;
 
 create or replace function auth.jwt() returns jsonb language sql stable as $$

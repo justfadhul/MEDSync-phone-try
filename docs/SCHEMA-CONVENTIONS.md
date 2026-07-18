@@ -28,10 +28,10 @@ Concretely, a migration that creates a table `t` MUST, in the same change:
    user's rows, for every policy.
 
 **Bootstrap exception (the only one):** the audit substrate itself
-(`audit.audit_log`, the trigger function) is created in migration `0005`
+(`audit.audit_log`, the trigger function) is created in migration `0003`
 (Gate 0.5), because a table cannot have an audit trigger before the audit table
-exists. Tables created before `0005` (only `profiles`) have their audit trigger
-attached in `0005`, and this is the single documented deferral. From `0005`
+exists. Tables created before `0003` (only `profiles`) have their audit trigger
+attached in `0003`, and this is the single documented deferral. From `0003`
 onward the audit trigger ships in the table's own creation migration.
 
 ## 2. No out-of-band schema changes
