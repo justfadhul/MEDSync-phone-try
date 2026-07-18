@@ -56,10 +56,10 @@ do $$ begin perform pg_temp.expect((select count(*)::int from public.user_roles)
 -- === MFA helpers for DOC (requires_mfa role) =================================
 -- without aal2:
 do $$ begin
-  perform pg_temp.expect_bool(auth.user_requires_mfa(), true,  'DOC role requires MFA');
-  perform pg_temp.expect_bool(auth.has_aal2(),          false, 'DOC has no aal2 yet');
-  perform pg_temp.expect_bool(auth.mfa_satisfied(),     false, 'DOC not MFA-satisfied w/o aal2');
-  perform pg_temp.expect_bool(auth.is_admin(),          false, 'DOC is not admin');
+  perform pg_temp.expect_bool(public.user_requires_mfa(), true,  'DOC role requires MFA');
+  perform pg_temp.expect_bool(public.has_aal2(),          false, 'DOC has no aal2 yet');
+  perform pg_temp.expect_bool(public.mfa_satisfied(),     false, 'DOC not MFA-satisfied w/o aal2');
+  perform pg_temp.expect_bool(public.is_admin(),          false, 'DOC is not admin');
 end $$;
 reset role; reset request.jwt.claims;
 
@@ -67,8 +67,8 @@ reset role; reset request.jwt.claims;
 set role authenticated;
 set request.jwt.claims to '{"sub":"bbbbbbbb-0000-7000-8000-0000000000d0","aal":"aal2"}';
 do $$ begin
-  perform pg_temp.expect_bool(auth.has_aal2(),      true, 'DOC now has aal2');
-  perform pg_temp.expect_bool(auth.mfa_satisfied(), true, 'DOC MFA-satisfied with aal2');
+  perform pg_temp.expect_bool(public.has_aal2(),      true, 'DOC now has aal2');
+  perform pg_temp.expect_bool(public.mfa_satisfied(), true, 'DOC MFA-satisfied with aal2');
 end $$;
 reset role; reset request.jwt.claims;
 
@@ -76,8 +76,8 @@ reset role; reset request.jwt.claims;
 set role authenticated;
 set request.jwt.claims to '{"sub":"bbbbbbbb-0000-7000-8000-0000000000c1"}';
 do $$ begin
-  perform pg_temp.expect_bool(auth.user_requires_mfa(), false, 'clerk role does not require MFA');
-  perform pg_temp.expect_bool(auth.mfa_satisfied(),     true,  'clerk MFA-satisfied w/o aal2');
+  perform pg_temp.expect_bool(public.user_requires_mfa(), false, 'clerk role does not require MFA');
+  perform pg_temp.expect_bool(public.mfa_satisfied(),     true,  'clerk MFA-satisfied w/o aal2');
 end $$;
 reset role; reset request.jwt.claims;
 
