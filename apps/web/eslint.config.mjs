@@ -13,6 +13,17 @@ const eslintConfig = [
     files: ["src/**/*.{ts,tsx}"],
     rules: {
       "medsync/no-raw-hex": "error",
+      // getSession() trusts the local cookie without revalidating the JWT and
+      // must never back an authorization decision. Use getUser() instead.
+      "no-restricted-syntax": [
+        "error",
+        {
+          selector:
+            "MemberExpression[property.name='getSession']",
+          message:
+            "Do not use getSession() for authorization — it does not revalidate the JWT. Use supabase.auth.getUser().",
+        },
+      ],
     },
   },
   {
