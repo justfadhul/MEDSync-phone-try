@@ -1,36 +1,47 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# MedSync
 
-## Getting Started
+A digital hospital operating system for the Ugandan healthcare context.
 
-First, run the development server:
+> **THE ENGINE-FIRST LAW.** No user-facing surface may be built that reads
+> from or writes to a data engine that does not yet exist in the database with
+> real tables, real RLS policies, and passing tests. No stubs, no mock data
+> layers, no placeholder surfaces.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+This repository is a **pnpm + Turborepo monorepo**.
+
+```
+medsync/
+  apps/
+    web/          # Next.js 16.2.x (App Router, Turbopack, TS strict)
+    mobile/       # Expo SDK 54 (Expo Router, TS strict, NativeWind v4)
+  packages/
+    tokens/       # design tokens — SINGLE SOURCE OF TRUTH (web + mobile)
+    types/        # shared TS types + generated Supabase types
+    db/           # Drizzle schema + migrations + PHI encryption
+  supabase/
+    migrations/
+    functions/
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Prerequisites
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Node >= 20, pnpm 10.x
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Getting started
 
-## Learn More
+```bash
+pnpm install
+pnpm dev         # all apps via Turborepo
+pnpm typecheck   # tsc --noEmit across the workspace
+pnpm lint
+```
 
-To learn more about Next.js, take a look at the following resources:
+Copy `.env.example` to your local env file and fill values — never commit real
+secrets. Only `.env.example` (names only) is tracked.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Phase 0
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This is the platform foundation. It builds **no clinical functionality** — no
+EMR/encounter engine, no vitals/monitoring engine, no notifications engine, no
+role workspaces. See `docs/` (added across Gates 0.3–0.8) for conventions,
+ADRs, and the Phase 0 closeout.

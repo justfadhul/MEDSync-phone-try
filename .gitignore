@@ -1,8 +1,8 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/node_modules
-/.pnp
+node_modules/
+.pnp
 .pnp.*
 .yarn/*
 !.yarn/patches
@@ -10,28 +10,49 @@
 !.yarn/releases
 !.yarn/versions
 
+# monorepo tooling
+.turbo/
+
 # testing
-/coverage
+coverage/
 
 # next.js
-/.next/
-/out/
+.next/
+out/
 
-# production
-/build
+# production build output
+build/
+dist/
+
+# expo / react-native
+.expo/
+.expo-shared/
+*.orig.*
+web-build/
+
+# native
+*.apk
+*.ipa
+*.keystore
+
+# supabase local
+supabase/.branches/
+supabase/.temp/
 
 # misc
 .DS_Store
 *.pem
 
-# debug
+# debug logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
-.env*
+# env files — NEVER commit real values. Only .env.example (names only) is tracked.
+.env
+.env.*
+!.env.example
 
 # vercel
 .vercel
@@ -39,3 +60,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# editor
+.idea/
+.vscode/*
+!.vscode/extensions.json
