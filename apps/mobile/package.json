@@ -9,9 +9,10 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "typecheck": "tsc --noEmit",
-    "lint": "expo lint"
+    "lint": "eslint ."
   },
   "dependencies": {
+    "@medsync/tokens": "workspace:*",
     "expo": "54.0.36",
     "expo-constants": "18.0.13",
     "expo-linking": "8.0.12",

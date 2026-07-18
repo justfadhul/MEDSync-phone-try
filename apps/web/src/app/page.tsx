@@ -1,55 +1,126 @@
+// Gate 0.2 token showcase. Every colour below is a SEMANTIC token class
+// (bg-surface-*, text-content-*, border-line-*, bg-brand-*, text-status-*).
+// No raw hex, no primitive, no default Tailwind palette — those are unavailable.
+
+function Swatch({ label, className }: { label: string; className: string }) {
+  return (
+    <div className="border-line-subtle overflow-hidden rounded-md border">
+      <div className={`h-12 ${className}`} />
+      <p className="text-content-secondary bg-surface-primary px-2 py-1 font-mono text-xs">
+        {label}
+      </p>
+    </div>
+  );
+}
+
+function StatusPill({
+  label,
+  dot,
+  text,
+}: {
+  label: string;
+  dot: string;
+  text: string;
+}) {
+  return (
+    <span className="border-line-subtle bg-surface-primary inline-flex items-center gap-2 rounded-full border px-3 py-1 text-sm">
+      <span className={`h-2.5 w-2.5 rounded-full ${dot}`} />
+      <span className={text}>{label}</span>
+    </span>
+  );
+}
+
 export default function Home() {
   return (
-    <main className="flex flex-1 flex-col bg-white text-zinc-900 dark:bg-black dark:text-zinc-50">
-      {/* Hero */}
-      <section className="flex flex-1 flex-col items-center justify-center px-6 pb-16 pt-[max(4rem,env(safe-area-inset-top))] text-center">
-        <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-500 text-white shadow-lg shadow-emerald-500/30">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth={2}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="h-8 w-8"
-            aria-hidden="true"
-          >
-            <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
-          </svg>
+    <main className="mx-auto w-full max-w-3xl flex-1 px-6 py-10">
+      <p className="text-content-tertiary font-mono text-xs">[02]</p>
+      <h1 className="text-content-primary mt-1 text-3xl font-semibold tracking-tight">
+        MedSync design tokens
+      </h1>
+      <p className="text-content-secondary mt-2 text-sm">
+        Semantic tokens only. Monochrome + teal. Red is reserved for clinical
+        emergencies.
+      </p>
+
+      <section className="mt-8">
+        <h2 className="text-content-primary text-sm font-semibold">Surfaces</h2>
+        <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3">
+          <Swatch label="surface-page" className="bg-surface-page" />
+          <Swatch label="surface-primary" className="bg-surface-primary" />
+          <Swatch label="surface-secondary" className="bg-surface-secondary" />
+          <Swatch label="surface-tertiary" className="bg-surface-tertiary" />
+          <Swatch label="surface-inverse" className="bg-surface-inverse" />
         </div>
+      </section>
 
-        <p className="mb-2 text-sm font-medium uppercase tracking-widest text-emerald-500">
-          Hello World
-        </p>
-        <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
-          MedSync
-        </h1>
-        <p className="mt-3 max-w-sm text-balance text-base leading-7 text-zinc-600 dark:text-zinc-400">
-          Your health, in sync. Track medications, appointments, and records —
-          all from your phone.
-        </p>
-
-        <div className="mt-8 flex w-full max-w-xs flex-col gap-3">
+      <section className="mt-8">
+        <h2 className="text-content-primary text-sm font-semibold">
+          Brand / interactive
+        </h2>
+        <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3">
+          <Swatch label="brand-primary" className="bg-brand-primary" />
+          <Swatch
+            label="brand-primary-hover"
+            className="bg-brand-primary-hover"
+          />
+          <Swatch label="brand-cta" className="bg-brand-cta" />
+          <Swatch label="brand-subtle" className="bg-brand-subtle" />
+        </div>
+        <div className="mt-4 flex flex-wrap gap-3">
           <button
             type="button"
-            className="h-12 w-full rounded-full bg-emerald-500 px-6 text-base font-medium text-white transition-colors hover:bg-emerald-600 active:bg-emerald-700"
+            className="bg-brand-primary hover:bg-brand-primary-hover text-content-on-brand h-11 rounded-md px-5 text-sm font-medium transition-colors"
           >
-            Get started
+            Primary action
           </button>
           <button
             type="button"
-            className="h-12 w-full rounded-full border border-zinc-200 px-6 text-base font-medium transition-colors hover:bg-zinc-50 active:bg-zinc-100 dark:border-zinc-800 dark:hover:bg-zinc-900 dark:active:bg-zinc-800"
+            className="bg-brand-cta text-content-on-brand h-11 rounded-md px-5 text-sm font-medium"
           >
-            Learn more
+            Dark CTA
+          </button>
+          <button
+            type="button"
+            className="border-line-default text-content-primary hover:bg-surface-secondary h-11 rounded-md border px-5 text-sm font-medium transition-colors"
+          >
+            Secondary
           </button>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="px-6 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-4 text-center text-xs text-zinc-400 dark:text-zinc-600">
-        Built with Next.js · Deployed on Vercel
-      </footer>
+      <section className="mt-8">
+        <h2 className="text-content-primary text-sm font-semibold">
+          Clinical status (the safety channel)
+        </h2>
+        <div className="mt-3 flex flex-wrap gap-2">
+          <StatusPill
+            label="Stable"
+            dot="bg-status-stable"
+            text="text-status-stable"
+          />
+          <StatusPill
+            label="Critical"
+            dot="bg-status-critical"
+            text="text-status-critical"
+          />
+          <StatusPill
+            label="Caution"
+            dot="bg-status-caution"
+            text="text-status-caution"
+          />
+          <StatusPill
+            label="Admitted"
+            dot="bg-status-admitted"
+            text="text-status-admitted"
+          />
+        </div>
+        <p className="text-content-tertiary mt-3 text-xs">
+          Only <span className="font-mono">status-critical</span> resolves to
+          red. Form errors use{" "}
+          <span className="text-feedback-error font-medium">amber</span>, not
+          red.
+        </p>
+      </section>
     </main>
   );
 }

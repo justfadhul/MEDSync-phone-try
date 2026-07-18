@@ -1,20 +1,10 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { tokens } from "@medsync/tokens";
 import "./globals.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   title: "MedSync",
-  description: "MedSync — your health, in sync.",
+  description: "MedSync — a digital hospital operating system.",
   applicationName: "MedSync",
   appleWebApp: {
     capable: true,
@@ -28,10 +18,9 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 1,
   viewportFit: "cover",
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
-    { media: "(prefers-color-scheme: dark)", color: "#000000" },
-  ],
+  // Light theme only — value comes from the token layer, not a raw hex.
+  // Dark is deliberately disabled (see @medsync/tokens flags.cjs).
+  themeColor: tokens["surface-primary"],
 };
 
 export default function RootLayout({
@@ -39,12 +28,12 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Font family comes from the token layer (font-sans → Neue Haas → fallbacks).
   return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col">{children}</body>
+    <html lang="en" className="h-full">
+      <body className="bg-surface-page text-content-primary flex min-h-full flex-col font-sans antialiased">
+        {children}
+      </body>
     </html>
   );
 }

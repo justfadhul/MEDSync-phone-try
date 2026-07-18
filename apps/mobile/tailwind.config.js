@@ -1,10 +1,10 @@
+const medsyncPreset = require("@medsync/tokens/preset");
+
 /** @type {import('tailwindcss').Config} */
-// Gate 0.1: minimal config so NativeWind compiles. Gate 0.2 replaces this with
-// the SAME preset generated from @medsync/tokens that web consumes (single
-// source of truth), so web and mobile resolve identical semantic tokens.
+// @medsync/tokens is the single source of truth. The SAME preset is consumed by
+// apps/web, so web and mobile resolve identical semantic tokens. nativewind/preset
+// must come first; medsyncPreset overrides the colour palette with semantic tokens.
 module.exports = {
   content: ["./app/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}"],
-  presets: [require("nativewind/preset")],
-  theme: { extend: {} },
-  plugins: [],
+  presets: [require("nativewind/preset"), medsyncPreset],
 };

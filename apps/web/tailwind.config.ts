@@ -1,14 +1,13 @@
 import type { Config } from "tailwindcss";
+import medsyncPreset from "@medsync/tokens/preset";
 
-// Gate 0.1: minimal config so the app builds on Tailwind 3.4.x.
-// Gate 0.2 replaces this with a preset generated from `@medsync/tokens`
-// (the single source of truth) and wires the semantic-token layer.
+// The token layer (@medsync/tokens) is the single source of truth. This preset
+// is generated from it and is the SAME preset the mobile app consumes, so web
+// and mobile resolve identical semantic tokens. Do not add colours here — add
+// them to packages/tokens/src/semantic.cjs.
 const config: Config = {
+  presets: [medsyncPreset as Config],
   content: ["./src/**/*.{ts,tsx,mdx}"],
-  theme: {
-    extend: {},
-  },
-  plugins: [],
 };
 
 export default config;
