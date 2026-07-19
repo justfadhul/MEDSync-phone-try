@@ -1,88 +1,45 @@
-import { Link } from "expo-router";
-import { ScrollView, Text, View } from "react-native";
+import { useCallback } from "react";
+import { Image, StyleSheet, Text, View } from "react-native";
+import { useRouter } from "expo-router";
+import * as SplashScreen from "expo-splash-screen";
+import Animated, { FadeInDown, useReducedMotion } from "react-native-reanimated";
+import { Button } from "@/components/ui/button";
 
-// Gate 0.2 token showcase — matches the web page. Same semantic tokens
-// (@medsync/tokens preset), so web and mobile resolve identical values.
-// No raw hex, no primitive: default palette is unavailable via the preset.
+// Welcome — the animated hand-off target from the native splash. Background is
+// surface-primary and the logo sits DEAD CENTRE at width 120, exactly as the
+// splash renders it (see app.config.js), so the logo does not jump. The logo is
+// absolutely centred (never moves); only the tagline + buttons block reveals,
+// and only when the OS isn't in reduce-motion. Brand blue on neutrals; no
+// status colours; light only.
+const LOGO = require("../assets/logo.png");
 
-function Swatch({ label, className }: { label: string; className: string }) {
+export default function Welcome() {
+  const router = useRouter();
+  const reduce = useReducedMotion();
+
+  // Reveal the app only once this screen has laid out — no flash on hand-off.
+  const onLayout = useCallback(() => {
+    SplashScreen.hideAsync();
+  }, []);
+
   return (
-    <View className="border-line-subtle overflow-hidden rounded-md border">
-      <View className={`h-12 ${className}`} />
-      <Text className="text-content-secondary bg-surface-primary px-2 py-1 font-mono text-xs">
-        {label}
-      </Text>
-    </View>
-  );
-}
-
-export default function Index() {
-  return (
-    <ScrollView className="bg-surface-page flex-1">
-      <View className="gap-6 px-6 py-10">
-        <View>
-          <Text className="text-content-tertiary font-mono text-xs">[02]</Text>
-          <Text className="text-content-primary mt-1 text-2xl font-semibold">
-            MedSync design tokens
-          </Text>
-          <Text className="text-content-secondary mt-2 text-sm">
-            Monochrome + blue, with a soft pastel wayfinding set. Red is reserved
-            for clinical emergencies.
-          </Text>
-          <Link
-            href="/dashboard"
-            className="text-brand-primary mt-3 text-sm font-semibold"
-          >
-            View ward dashboard →
-          </Link>
-        </View>
-
-        <View className="gap-3">
-          <Text className="text-content-primary text-sm font-semibold">
-            Surfaces
-          </Text>
-          <Swatch label="surface-primary" className="bg-surface-primary" />
-          <Swatch label="surface-secondary" className="bg-surface-secondary" />
-          <Swatch label="surface-inverse" className="bg-surface-inverse" />
-        </View>
-
-        <View className="gap-3">
-          <Text className="text-content-primary text-sm font-semibold">
-            Brand
-          </Text>
-          <Swatch label="brand-primary" className="bg-brand-primary" />
-          <Swatch label="brand-cta" className="bg-brand-cta" />
-        </View>
-
-        <View className="gap-3">
-          <Text className="text-content-primary text-sm font-semibold">
-            Clinical status
-          </Text>
-          <View className="flex-row flex-wrap gap-3">
-            <Swatch label="stable" className="bg-status-stable" />
-            <Swatch label="critical" className="bg-status-critical" />
-            <Swatch label="caution" className="bg-status-caution" />
-            <Swatch label="admitted" className="bg-status-admitted" />
-          </View>
-        </View>
-
-        <View className="gap-3">
-          <Text className="text-content-primary text-sm font-semibold">
-            Wayfinding pastels
-          </Text>
-          <Text className="text-content-tertiary text-xs">
-            Decorative surface tints only — never a clinical signal.
-          </Text>
-          <View className="flex-row flex-wrap gap-3">
-            <Swatch label="tint-rose" className="bg-tint-rose" />
-            <Swatch label="tint-peach" className="bg-tint-peach" />
-            <Swatch label="tint-lavender" className="bg-tint-lavender" />
-            <Swatch label="tint-mint" className="bg-tint-mint" />
-            <Swatch label="tint-coral" className="bg-tint-coral" />
-            <Swatch label="tint-sky" className="bg-tint-sky" />
-          </View>
-        </View>
+    <View className="bg-surface-primary flex-1" onLayout={onLayout}>
+      {/* logo, dead centre — identical to the splash position (no jump) */}
+      <View pointerEvents="none" style={StyleSheet.absoluteFill} className="items-center justify-center">
+        <Image source={LOGO} style={{ width: 120, height: 120 }} resizeMode="contain" accessibilityLabel="MedSync" />
       </View>
-    </ScrollView>
+
+      {/* tagline + actions, pinned to the bottom */}
+      <View className="flex-1 justify-end px-6 pb-12">
+        <Animated.View entering={reduce ? undefined : FadeInDown.delay(300).duration(500)} className="gap-3">
+          <View className="mb-2 items-center">
+            <Text className="text-content-primary text-xl font-semibold tracking-tight">MedSync</Text>
+            <Text className="text-content-secondary mt-1 text-sm">Care that continues.</Text>
+          </View>
+          <Button title="Get started" onPress={() => router.push("/onboarding")} />
+          <Button title="I already have an account" variant="ghost" onPress={() => router.push("/sign-in")} />
+        </Animated.View>
+      </View>
+    </View>
   );
 }
