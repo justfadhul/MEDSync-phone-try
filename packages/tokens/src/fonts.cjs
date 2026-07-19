@@ -16,6 +16,19 @@ const fonts = {
     "sans-serif",
   ],
   mono: ["Fira Code", "ui-monospace", "SFMono-Regular", "monospace"],
+
+  // MARKETING-SCOPED display serif (ADR-0008). Editorial credibility on public
+  // surfaces only — fenced from product UI by an ESLint rule so the clinical
+  // surface typography never changes. System serif stack: no paid licence.
+  display: [
+    "Iowan Old Style",
+    "Palatino Linotype",
+    "Palatino",
+    "Book Antiqua",
+    "Georgia",
+    "Times New Roman",
+    "serif",
+  ],
 };
 
 module.exports = { fonts };

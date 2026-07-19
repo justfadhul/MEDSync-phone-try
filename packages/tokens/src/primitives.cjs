@@ -99,6 +99,24 @@ const primitives = {
       tintDark: "rgba(77,134,190,0.18)", accentDark: "#7FB0DC",
     },
   },
+
+  // -------------------------------------------------------------------------
+  // GLASS MATERIALS (marketing chrome only — nav + announcement + one hero
+  // element). Conservative: backdrop-filter + rgba only, no SVG/WebGL. These
+  // are injected as CSS variables and consumed by the .material-glass-*
+  // utilities (globals.css), never inline. Solid fallbacks live in those
+  // utilities via @supports / prefers-reduced-transparency.
+  // -------------------------------------------------------------------------
+  glass: {
+    navBg: "rgba(249,250,251,0.72)", // ~surface-page, translucent
+    navBorder: "rgba(17,24,39,0.08)",
+    navShadow: "0 1px 0 rgba(255,255,255,0.6) inset, 0 6px 20px -14px rgba(16,24,40,0.28)",
+    panelBg: "rgba(255,255,255,0.60)",
+    panelBorder: "rgba(255,255,255,0.55)",
+    panelShadow: "0 1px 2px rgba(16,24,40,0.05), 0 20px 44px -26px rgba(16,24,40,0.38)",
+    blur: "blur(12px) saturate(140%)",
+    blurStrong: "blur(16px) saturate(140%)",
+  },
 };
 
 module.exports = { primitives };

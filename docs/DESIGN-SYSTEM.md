@@ -180,3 +180,26 @@ apps/mobile/components/ui/      mobile primitives
 apps/web/src/app/design/        showcase + reference dashboard
 apps/mobile/app/dashboard.tsx   mobile reference dashboard
 ```
+
+---
+
+## Amendment (ADR-0008) — marketing-scoped display serif
+
+Public marketing surfaces may use one display serif, `font-display` (a system
+serif stack — no paid licence). It is **fenced to marketing code only**
+(`components/landing/**`, `components/marketing/**`, `app/page.tsx`) by an ESLint
+rule; product UI stays on `font-sans` (UI/prose) and `font-mono` (data, codes,
+MRNs, timestamps). Rationale: editorial credibility on public surfaces without
+changing the clinical surface typography.
+
+## Amendment — glass materials (marketing chrome only)
+
+A conservative Apple-style "liquid glass" material is available to marketing
+chrome — the sticky nav, the announcement bar, and one floating hero element —
+via the `.material-glass-nav` / `.material-glass-panel` utilities (values in
+`primitives.cjs` → CSS vars). Implementation is `backdrop-filter` + `rgba()`
+only (no SVG/WebGL, no `opacity`), solid by default, translucent only where
+supported and where the viewer hasn't asked to reduce transparency. **Glass is
+forbidden on any `StatusPill`, `ThresholdChart`, clinical fragment, or any
+surface carrying body copy** — translucency makes a clinical status colour's
+contrast depend on the backdrop, which is a safety regression, not an aesthetic.

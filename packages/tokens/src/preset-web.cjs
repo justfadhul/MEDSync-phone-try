@@ -18,6 +18,22 @@
 const plugin = require("tailwindcss/plugin");
 const { cssVars, varColors } = require("./theme.cjs");
 const { fonts } = require("./fonts.cjs");
+const { primitives } = require("./primitives.cjs");
+
+// Glass material variables — NOT colours (blur/shadow strings), so they bypass
+// the colour map and are injected straight into :root. Consumed only by the
+// .material-glass-* utilities in globals.css.
+const g = primitives.glass;
+const glassVars = {
+  "--ms-glass-nav-bg": g.navBg,
+  "--ms-glass-nav-border": g.navBorder,
+  "--ms-glass-nav-shadow": g.navShadow,
+  "--ms-glass-panel-bg": g.panelBg,
+  "--ms-glass-panel-border": g.panelBorder,
+  "--ms-glass-panel-shadow": g.panelShadow,
+  "--ms-glass-blur": g.blur,
+  "--ms-glass-blur-strong": g.blurStrong,
+};
 
 const colors = {
   transparent: "transparent",
@@ -40,13 +56,14 @@ const preset = {
     fontFamily: {
       sans: fonts.sans,
       mono: fonts.mono,
+      display: fonts.display,
     },
     extend: {},
   },
   plugins: [
     plugin(function ({ addBase }) {
       addBase({
-        ":root": cssVars("light"),
+        ":root": { ...cssVars("light"), ...glassVars },
         ".theme-dark": cssVars("dark"),
       });
     }),

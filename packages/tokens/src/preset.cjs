@@ -39,6 +39,7 @@ const preset = {
     fontFamily: {
       sans: fonts.sans,
       mono: fonts.mono,
+      display: fonts.display,
     },
     extend: {},
   },
