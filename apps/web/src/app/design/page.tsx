@@ -4,7 +4,24 @@ import { Tag } from "@/components/ui/tag";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { KpiTile } from "@/components/ui/kpi-tile";
+import { LineChart } from "@/components/ui/line-chart";
+import { ThresholdChart } from "@/components/ui/threshold-chart";
 import { ControlsDemo } from "./controls-demo";
+
+const HR = [
+  { label: "08", value: 72, reference: 70 },
+  { label: "10", value: 76, reference: 72 },
+  { label: "12", value: 74, reference: 71 },
+  { label: "14", value: 82, reference: 74 },
+  { label: "15", value: 88, reference: 78 },
+  { label: "16", value: 96, reference: 80 },
+  { label: "17", value: 104, reference: 79 },
+  { label: "now", value: 122, reference: 90 },
+];
+const TEMP = [
+  36.6, 36.8, 37, 36.9, 37.2, 37.5, 38.2, 37.8, 37.4, 37.1, 37.6, 38.6, 39.1,
+  38.4, 37.9, 37.5, 37.2, 37, 36.9, 37.3, 37.7, 38.1, 37.6, 37.4,
+];
 
 // Internal design-system reference. Renders the real shared primitives that
 // consume @medsync/tokens — no clinical engine involved (engine-first law holds).
@@ -120,6 +137,53 @@ export default function DesignPage() {
             spark={[1, 1, 2, 1, 2, 2, 3, 3]}
             sparkTone="critical"
           />
+        </div>
+      </section>
+
+      <section className="mt-10">
+        <h2 className="text-content-primary text-sm font-semibold">Charts</h2>
+        <div className="mt-3 grid gap-4 sm:grid-cols-2">
+          <Card className="gap-3">
+            <div className="flex items-center justify-between">
+              <span className="text-content-tertiary font-mono text-[10px] tracking-wider uppercase">
+                Heart rate · Bed 12
+              </span>
+              <span className="text-content-primary font-mono text-sm font-semibold">
+                122 bpm
+              </span>
+            </div>
+            <LineChart
+              data={HR}
+              threshold={100}
+              yMin={60}
+              yMax={130}
+              unit="bpm"
+              gridValues={[60, 80, 100, 120]}
+            />
+          </Card>
+          <Card className="gap-3">
+            <div className="flex items-center justify-between">
+              <span className="text-content-tertiary font-mono text-[10px] tracking-wider uppercase">
+                Temperature °C · 24h
+              </span>
+              <span className="text-content-tertiary font-mono text-sm">
+                peak 39.1°
+              </span>
+            </div>
+            <ThresholdChart
+              values={TEMP}
+              threshold={38}
+              yMin={36}
+              yMax={40}
+              ticks={[
+                { i: 0, label: "00" },
+                { i: 6, label: "06" },
+                { i: 12, label: "12" },
+                { i: 18, label: "18" },
+                { i: 23, label: "now" },
+              ]}
+            />
+          </Card>
         </div>
       </section>
 
