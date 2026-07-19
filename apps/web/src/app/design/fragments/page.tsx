@@ -4,6 +4,9 @@ import {
   StatusRow,
   CareAreaTiles,
   CareTeamFeed,
+  OfflineSms,
+  Receipts,
+  Horizons,
   IllustrativeChip,
 } from "@/components/landing/fragments";
 
@@ -58,6 +61,15 @@ export default function FragmentsPage() {
         </Frame>
         <Frame id="F5" title="Care-team feed">
           <CareTeamFeed className="w-full max-w-md" />
+        </Frame>
+        <Frame id="F6" title="Offline / SMS">
+          <OfflineSms className="w-64" />
+        </Frame>
+        <Frame id="F7" title="Engineering receipts">
+          <Receipts className="w-full" />
+        </Frame>
+        <Frame id="F8" title="Horizons">
+          <Horizons className="w-full" />
         </Frame>
       </div>
     </main>

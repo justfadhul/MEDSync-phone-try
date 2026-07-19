@@ -5,6 +5,9 @@ export { ThresholdBreach } from "./threshold-breach";
 export { StatusRow } from "./status-row";
 export { CareAreaTiles } from "./care-area-tiles";
 export { CareTeamFeed } from "./care-team-feed";
+export { OfflineSms } from "./offline-sms";
+export { Receipts } from "./receipts";
+export { Horizons } from "./horizons";
 
 // A small, quiet marker placed next to a fragment cluster — signals the data is
 // illustrative without a disclaimer paragraph. Neutral only.

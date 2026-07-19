@@ -60,3 +60,59 @@ export const F5_FEED: { actor: string; action: string; ref: string; time: string
   { actor: "Nurse J.", action: "logged a BP reading", ref: "Bed 07", time: "07:52" },
   { actor: "System", action: "flagged a threshold breach", ref: "Bed 12", time: "07:50" },
 ];
+
+// F6 — offline-first: a reading captured with no signal + an SMS reminder. No
+// dose. Demonstrates "works when the network doesn't."
+export const F6_OFFLINE = {
+  reading: { label: "Fasting glucose", value: "6.4", unit: "mmol/L" },
+  savedNote: "Saved offline — syncs when you're back online",
+  sms: "We'll text you at 11:00 too. Reply 1 to confirm — works on basic phones.",
+};
+
+// F7 — engineering receipts. Each claim points to a file that ACTUALLY exists in
+// this repo (verified). No badges, no unearned certifications.
+export const F7_RECEIPTS: { mechanism: string; detail: string; file: string }[] = [
+  {
+    mechanism: "Row-level security, deny-by-default",
+    detail: "Every query is checked against the user's role before a row is returned.",
+    file: "supabase/migrations/0001_profiles.sql",
+  },
+  {
+    mechanism: "Append-only audit trail",
+    detail: "Only INSERT is granted; UPDATE/DELETE are revoked from every role.",
+    file: "supabase/migrations/0003_audit.sql",
+  },
+  {
+    mechanism: "AES-256-GCM PHI encryption",
+    detail: "A fresh IV per call; the auth tag is verified on decrypt.",
+    file: "packages/db/src/encryption.ts",
+  },
+  {
+    mechanism: "Revalidated authentication",
+    detail: "getUser() over getSession(), enforced at the proxy and by a lint rule.",
+    file: "apps/web/src/lib/supabase/server.ts",
+  },
+  {
+    mechanism: "Write-only public capture",
+    detail: "Anonymous INSERT only — the waitlist cannot be read back or enumerated.",
+    file: "supabase/migrations/0005_waitlist.sql",
+  },
+];
+
+// F8 — horizons. What ships now, next, and what is genuinely research (named as
+// research, never a product line — and never a dose value).
+export const F8_HORIZONS: { when: string; items: string[]; research?: boolean }[] = [
+  {
+    when: "Now",
+    items: ["Unified record + append-only audit", "Internal Medicine specialties", "SMS / USSD adherence loop", "First hospital pilot"],
+  },
+  {
+    when: "Next",
+    items: ["Regional referral onboarding", "Mobile-money collection", "Home BP & glucose device SDKs"],
+  },
+  {
+    when: "Research",
+    items: ["Closed-loop dosing algorithms", "OPD triage decision-support", "Predictive admission models"],
+    research: true,
+  },
+];
