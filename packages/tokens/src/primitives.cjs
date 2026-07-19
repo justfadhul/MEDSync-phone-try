@@ -3,7 +3,7 @@
 // -----------------------------------------------------------------------------
 // Primitives are NEVER referenced by a component and are NOT exported from the
 // package index. Components consume SEMANTIC tokens only (see semantic.cjs).
-// Monochrome + teal. Red is reserved for clinical emergencies (see semantic).
+// Monochrome + blue. Red is reserved for clinical emergencies (see semantic).
 // =============================================================================
 
 const primitives = {
@@ -25,19 +25,20 @@ const primitives = {
     950: "#030712",
   },
 
-  // Brand: teal-600 primary, teal-900 dark CTA background.
-  teal: {
-    50: "#F0FDFA",
-    100: "#CCFBF1",
-    200: "#99F6E4",
-    300: "#5EEAD4",
-    400: "#2DD4BF",
-    500: "#14B8A6",
-    600: "#0D9488",
-    700: "#0F766E",
-    800: "#115E59",
-    900: "#134E4A",
-    950: "#042F2E",
+  // Brand: blue-600 primary (AA on white), blue-900 dark CTA background.
+  // Centred on the reference primary #5A81FA (=blue-500) / secondary #2C3D8F.
+  blue: {
+    50: "#EEF2FF",
+    100: "#DCE3FF",
+    200: "#C0CCFF",
+    300: "#9DB0FF",
+    400: "#7590FB",
+    500: "#5A81FA",
+    600: "#3E63DD",
+    700: "#3050C0",
+    800: "#293F99",
+    900: "#2C3D8F",
+    950: "#1B2559",
   },
 
   // Clinical emergency ONLY. Deliberately minimal so red cannot creep into

@@ -29,22 +29,22 @@ const semantic = {
   "content-disabled": { light: p.gray[400], dark: p.gray[600] },
   "content-inverse": { light: p.white, dark: p.gray[900] },
   "content-on-brand": { light: p.white, dark: p.white },
-  "content-link": { light: p.teal[600], dark: p.teal[400] },
+  "content-link": { light: p.blue[600], dark: p.blue[400] },
 
   // --- Lines (borders / dividers) --------------------------------------------
   "line-subtle": { light: p.gray[200], dark: p.gray[700] },
   "line-default": { light: p.gray[300], dark: p.gray[600] },
   "line-strong": { light: p.gray[400], dark: p.gray[500] },
 
-  // --- Brand / interactive (teal) --------------------------------------------
-  "brand-primary": { light: p.teal[600], dark: p.teal[500] },
-  "brand-primary-hover": { light: p.teal[700], dark: p.teal[400] },
-  "brand-primary-active": { light: p.teal[800], dark: p.teal[300] },
-  "brand-cta": { light: p.teal[900], dark: p.teal[800] }, // dark CTA background
-  "brand-subtle": { light: p.teal[50], dark: p.teal[950] },
+  // --- Brand / interactive (blue) --------------------------------------------
+  "brand-primary": { light: p.blue[600], dark: p.blue[500] },
+  "brand-primary-hover": { light: p.blue[700], dark: p.blue[400] },
+  "brand-primary-active": { light: p.blue[800], dark: p.blue[300] },
+  "brand-cta": { light: p.blue[900], dark: p.blue[800] }, // dark CTA background
+  "brand-subtle": { light: p.blue[50], dark: p.blue[950] },
 
   // --- Focus -----------------------------------------------------------------
-  "focus-ring": { light: p.teal[600], dark: p.teal[400] },
+  "focus-ring": { light: p.blue[600], dark: p.blue[400] },
 
   // --- Clinical status (THE SAFETY CHANNEL) ----------------------------------
   // status-critical is the sole path to red. Do not add other red tokens.
@@ -55,8 +55,8 @@ const semantic = {
   "status-critical-surface": { light: p.red[50], dark: p.gray[800] },
   "status-caution": { light: p.amber[500], dark: p.amber[400] },
   "status-caution-surface": { light: p.amber[50], dark: p.gray[800] },
-  "status-admitted": { light: p.teal[600], dark: p.teal[500] },
-  "status-admitted-surface": { light: p.teal[50], dark: p.gray[800] },
+  "status-admitted": { light: p.blue[600], dark: p.blue[500] },
+  "status-admitted-surface": { light: p.blue[50], dark: p.gray[800] },
 
   // --- Feedback (NON-clinical UI states) — MUST NOT use red ------------------
   // Form validation errors and warnings use amber/neutral so red keeps its
@@ -67,7 +67,7 @@ const semantic = {
   "feedback-warning-surface": { light: p.amber[50], dark: p.gray[800] },
   "feedback-success": { light: p.green[600], dark: p.green[600] },
   "feedback-success-surface": { light: p.green[50], dark: p.gray[800] },
-  "feedback-info": { light: p.teal[600], dark: p.teal[500] },
+  "feedback-info": { light: p.blue[600], dark: p.blue[500] },
 
   // --- Action intents --------------------------------------------------------
   // Destructive actions use a NEUTRAL treatment, never red (red = emergency).
