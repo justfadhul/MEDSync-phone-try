@@ -84,6 +84,26 @@ export type Database = {
         };
         Relationships: [];
       };
+      // Public marketing waitlist (migration 0005). Anon INSERT only — no SELECT
+      // to anon — so from the outside it is write-only. Not PHI.
+      waitlist: {
+        Row: {
+          id: string;
+          email: string;
+          source: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          email: string;
+          source?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          source?: string | null;
+        };
+        Relationships: [];
+      };
     };
     Views: Record<never, never>;
     Functions: {
