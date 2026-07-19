@@ -1,3 +1,4 @@
+import { Link } from "expo-router";
 import { ScrollView, Text, View } from "react-native";
 
 // Gate 0.2 token showcase — matches the web page. Same semantic tokens
@@ -25,8 +26,15 @@ export default function Index() {
             MedSync design tokens
           </Text>
           <Text className="text-content-secondary mt-2 text-sm">
-            Monochrome + teal. Red is reserved for clinical emergencies.
+            Monochrome + blue, with a soft pastel wayfinding set. Red is reserved
+            for clinical emergencies.
           </Text>
+          <Link
+            href="/dashboard"
+            className="text-brand-primary mt-3 text-sm font-semibold"
+          >
+            View ward dashboard →
+          </Link>
         </View>
 
         <View className="gap-3">
@@ -55,6 +63,23 @@ export default function Index() {
             <Swatch label="critical" className="bg-status-critical" />
             <Swatch label="caution" className="bg-status-caution" />
             <Swatch label="admitted" className="bg-status-admitted" />
+          </View>
+        </View>
+
+        <View className="gap-3">
+          <Text className="text-content-primary text-sm font-semibold">
+            Wayfinding pastels
+          </Text>
+          <Text className="text-content-tertiary text-xs">
+            Decorative surface tints only — never a clinical signal.
+          </Text>
+          <View className="flex-row flex-wrap gap-3">
+            <Swatch label="tint-rose" className="bg-tint-rose" />
+            <Swatch label="tint-peach" className="bg-tint-peach" />
+            <Swatch label="tint-lavender" className="bg-tint-lavender" />
+            <Swatch label="tint-mint" className="bg-tint-mint" />
+            <Swatch label="tint-coral" className="bg-tint-coral" />
+            <Swatch label="tint-sky" className="bg-tint-sky" />
           </View>
         </View>
       </View>

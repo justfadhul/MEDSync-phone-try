@@ -86,9 +86,9 @@ begin
     -- SELECT basis: any authenticated user may read reference data (no PII).
     execute format('create policy %I on public.%I for select to authenticated using (true)', t||'_select_all', t);
     -- WRITE basis: admins only.
-    execute format('create policy %I on public.%I for insert to authenticated with check (auth.is_admin())', t||'_insert_admin', t);
-    execute format('create policy %I on public.%I for update to authenticated using (auth.is_admin()) with check (auth.is_admin())', t||'_update_admin', t);
-    execute format('create policy %I on public.%I for delete to authenticated using (auth.is_admin())', t||'_delete_admin', t);
+    execute format('create policy %I on public.%I for insert to authenticated with check (public.is_admin())', t||'_insert_admin', t);
+    execute format('create policy %I on public.%I for update to authenticated using (public.is_admin()) with check (public.is_admin())', t||'_update_admin', t);
+    execute format('create policy %I on public.%I for delete to authenticated using (public.is_admin())', t||'_delete_admin', t);
     -- updated_at trigger + audit trigger
     execute format('create trigger %I before update on public.%I for each row execute function public.set_updated_at()', t||'_set_updated_at', t);
     execute format('create trigger %I after insert or update or delete on public.%I for each row execute function audit.log_change()', t||'_audit', t);

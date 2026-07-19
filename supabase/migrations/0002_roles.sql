@@ -53,7 +53,7 @@ create trigger user_roles_set_updated_at before update on public.user_roles
 -- being blocked by (or recursing into) the caller's RLS. They read auth.uid()
 -- of the CALLER (stable), and are the single source of role truth for policies.
 -- =============================================================================
-create or replace function auth.user_role_keys()
+create or replace function public.user_role_keys()
 returns setof text language sql stable security definer set search_path = public
 as $$
   select r.key
@@ -62,7 +62,7 @@ as $$
   where ur.user_id = auth.uid() and ur.deleted_at is null;
 $$;
 
-create or replace function auth.is_admin()
+create or replace function public.is_admin()
 returns boolean language sql stable security definer set search_path = public
 as $$
   select exists (
@@ -72,7 +72,7 @@ as $$
   );
 $$;
 
-create or replace function auth.user_requires_mfa()
+create or replace function public.user_requires_mfa()
 returns boolean language sql stable security definer set search_path = public
 as $$
   select exists (
@@ -84,7 +84,7 @@ $$;
 
 -- AAL2 == the caller completed a second factor this session. Supabase stamps
 -- the 'aal' claim in the JWT; auth.jwt() reads it.
-create or replace function auth.has_aal2()
+create or replace function public.has_aal2()
 returns boolean language sql stable
 as $$
   select coalesce(auth.jwt() ->> 'aal', 'aal1') = 'aal2';
@@ -93,17 +93,17 @@ $$;
 -- Convenience: caller is authorized for a clinical/admin action = has passed
 -- MFA if their role requires it. Server code re-checks this too (defence in
 -- depth); it is NOT only a UI concern.
-create or replace function auth.mfa_satisfied()
+create or replace function public.mfa_satisfied()
 returns boolean language sql stable security definer set search_path = public
 as $$
-  select (not auth.user_requires_mfa()) or auth.has_aal2();
+  select (not public.user_requires_mfa()) or public.has_aal2();
 $$;
 
 -- --- Grants ------------------------------------------------------------------
 grant select on public.roles to authenticated;
 grant select, insert, update, delete on public.user_roles to authenticated;
-grant execute on function auth.user_role_keys(), auth.is_admin(),
-  auth.user_requires_mfa(), auth.has_aal2(), auth.mfa_satisfied() to authenticated;
+grant execute on function public.user_role_keys(), public.is_admin(),
+  public.user_requires_mfa(), public.has_aal2(), public.mfa_satisfied() to authenticated;
 
 -- --- RLS: roles --------------------------------------------------------------
 alter table public.roles enable row level security;
@@ -115,11 +115,11 @@ create policy roles_select_all on public.roles for select
   to authenticated using (true);
 -- WRITE basis: admins only. Non-admins cannot mint or edit roles.
 create policy roles_insert_admin on public.roles for insert
-  to authenticated with check (auth.is_admin());
+  to authenticated with check (public.is_admin());
 create policy roles_update_admin on public.roles for update
-  to authenticated using (auth.is_admin()) with check (auth.is_admin());
+  to authenticated using (public.is_admin()) with check (public.is_admin());
 create policy roles_delete_admin on public.roles for delete
-  to authenticated using (auth.is_admin());
+  to authenticated using (public.is_admin());
 
 -- --- RLS: user_roles ---------------------------------------------------------
 alter table public.user_roles enable row level security;
@@ -127,14 +127,14 @@ alter table public.user_roles force  row level security;
 
 -- SELECT basis: a user sees their OWN assignments; admins see all.
 create policy user_roles_select_own_or_admin on public.user_roles for select
-  to authenticated using (user_id = auth.uid() or auth.is_admin());
+  to authenticated using (user_id = auth.uid() or public.is_admin());
 -- INSERT basis: admins ONLY. Crucially a user may NOT insert a row for
 -- themselves — self-granting is forbidden even for one's own user_id.
 create policy user_roles_insert_admin on public.user_roles for insert
-  to authenticated with check (auth.is_admin());
+  to authenticated with check (public.is_admin());
 -- UPDATE basis: admins only (also the soft-delete path).
 create policy user_roles_update_admin on public.user_roles for update
-  to authenticated using (auth.is_admin()) with check (auth.is_admin());
+  to authenticated using (public.is_admin()) with check (public.is_admin());
 -- DELETE basis: hard delete denied for everyone (assignments are soft-deleted
 -- for audit; who held what role is retained).
 create policy user_roles_delete_none on public.user_roles for delete

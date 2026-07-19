@@ -3,7 +3,7 @@
 // -----------------------------------------------------------------------------
 // Primitives are NEVER referenced by a component and are NOT exported from the
 // package index. Components consume SEMANTIC tokens only (see semantic.cjs).
-// Monochrome + teal. Red is reserved for clinical emergencies (see semantic).
+// Monochrome + blue. Red is reserved for clinical emergencies (see semantic).
 // =============================================================================
 
 const primitives = {
@@ -25,19 +25,20 @@ const primitives = {
     950: "#030712",
   },
 
-  // Brand: teal-600 primary, teal-900 dark CTA background.
-  teal: {
-    50: "#F0FDFA",
-    100: "#CCFBF1",
-    200: "#99F6E4",
-    300: "#5EEAD4",
-    400: "#2DD4BF",
-    500: "#14B8A6",
-    600: "#0D9488",
-    700: "#0F766E",
-    800: "#115E59",
-    900: "#134E4A",
-    950: "#042F2E",
+  // Brand: blue-600 primary (AA on white), blue-900 dark CTA background.
+  // Centred on the reference primary #5A81FA (=blue-500) / secondary #2C3D8F.
+  blue: {
+    50: "#EEF2FF",
+    100: "#DCE3FF",
+    200: "#C0CCFF",
+    300: "#9DB0FF",
+    400: "#7590FB",
+    500: "#5A81FA",
+    600: "#3E63DD",
+    700: "#3050C0",
+    800: "#293F99",
+    900: "#2C3D8F",
+    950: "#1B2559",
   },
 
   // Clinical emergency ONLY. Deliberately minimal so red cannot creep into
@@ -62,6 +63,41 @@ const primitives = {
     50: "#F0FDF4",
     600: "#16A34A",
     700: "#15803D",
+  },
+
+  // -------------------------------------------------------------------------
+  // Categorical surface pastels — WAYFINDING ONLY, never a clinical signal.
+  // Muted, decorative card tints + a matching icon/label accent. Deliberately
+  // desaturated so they never read as the saturated clinical trio (red/green/
+  // amber), which stays reserved for status. `tint`/`accent` are the light
+  // values; `tintDark`/`accentDark` are tuned for operational dark surfaces
+  // (translucent fill so the dark page shows through; brighter accent).
+  // -------------------------------------------------------------------------
+  pastel: {
+    rose: {
+      tint: "#F8DEDE", accent: "#C97B7B",
+      tintDark: "rgba(201,123,123,0.18)", accentDark: "#E3A6A6",
+    },
+    peach: {
+      tint: "#FBE7D2", accent: "#D2914E",
+      tintDark: "rgba(210,145,78,0.18)", accentDark: "#E5B074",
+    },
+    lavender: {
+      tint: "#E0DBF4", accent: "#7E70CE",
+      tintDark: "rgba(126,112,206,0.22)", accentDark: "#A99CE6",
+    },
+    mint: {
+      tint: "#D3EDE2", accent: "#489C80",
+      tintDark: "rgba(72,156,128,0.18)", accentDark: "#6CC4A6",
+    },
+    coral: {
+      tint: "#F8CFC4", accent: "#D9765F",
+      tintDark: "rgba(217,118,95,0.18)", accentDark: "#EC9583",
+    },
+    sky: {
+      tint: "#D8E7F6", accent: "#4D86BE",
+      tintDark: "rgba(77,134,190,0.18)", accentDark: "#7FB0DC",
+    },
   },
 };
 

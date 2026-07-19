@@ -81,7 +81,7 @@ alter table audit.audit_log force  row level security;
 
 -- SELECT basis: admins only may read the audit trail.
 create policy audit_select_admin on audit.audit_log for select
-  to authenticated using (auth.is_admin());
+  to authenticated using (public.is_admin());
 -- No INSERT policy for end users (writes are via SECURITY DEFINER trigger).
 -- No UPDATE policy. No DELETE policy. For ANY role. (Belt: the trigger above
 -- blocks UPDATE/DELETE even for BYPASSRLS roles.)
