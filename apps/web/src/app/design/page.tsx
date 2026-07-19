@@ -55,6 +55,36 @@ export default function DesignPage() {
       </section>
 
       <section className="mt-10">
+        <h2 className="text-content-primary text-sm font-semibold">
+          Operational surface · dark
+        </h2>
+        <p className="text-content-tertiary mt-1 text-xs">
+          Analytics / admin / audit may opt into dark by wrapping in{" "}
+          <span className="font-mono">.theme-dark</span>. Clinical surfaces never
+          do — the same components simply render light.
+        </p>
+        <div className="theme-dark bg-surface-page border-line-subtle mt-3 flex flex-col gap-4 rounded-md border p-6">
+          <div className="flex flex-wrap gap-3">
+            <Button>Export</Button>
+            <Button variant="secondary">Add filter</Button>
+            <Button variant="ghost">Reset</Button>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <StatusPill status="stable" />
+            <StatusPill status="critical" />
+            <StatusPill status="caution" />
+          </div>
+          <Card className="max-w-sm gap-2">
+            <p className="text-content-primary text-sm font-semibold">
+              Median wait
+            </p>
+            <p className="text-content-secondary font-mono text-2xl">42 min</p>
+            <p className="text-content-tertiary text-xs">▼ 6 vs last week</p>
+          </Card>
+        </div>
+      </section>
+
+      <section className="mt-10">
         <h2 className="text-content-primary text-sm font-semibold">Card</h2>
         <Card className="mt-3 max-w-sm gap-3">
           <div className="flex items-center justify-between">
