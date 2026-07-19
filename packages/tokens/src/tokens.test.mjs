@@ -84,6 +84,8 @@ test("Tailwind preset removes the default palette (no raw gray/emerald/red group
     "status",
     "feedback",
     "action",
+    "tint", // categorical wayfinding pastels (decorative, non-clinical)
+    "accent",
   ]);
   for (const key of Object.keys(colors)) {
     assert.ok(allowed.has(key), `unexpected colour group "${key}" in preset`);

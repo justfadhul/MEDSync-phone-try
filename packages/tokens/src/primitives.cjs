@@ -64,6 +64,41 @@ const primitives = {
     600: "#16A34A",
     700: "#15803D",
   },
+
+  // -------------------------------------------------------------------------
+  // Categorical surface pastels — WAYFINDING ONLY, never a clinical signal.
+  // Muted, decorative card tints + a matching icon/label accent. Deliberately
+  // desaturated so they never read as the saturated clinical trio (red/green/
+  // amber), which stays reserved for status. `tint`/`accent` are the light
+  // values; `tintDark`/`accentDark` are tuned for operational dark surfaces
+  // (translucent fill so the dark page shows through; brighter accent).
+  // -------------------------------------------------------------------------
+  pastel: {
+    rose: {
+      tint: "#F8DEDE", accent: "#C97B7B",
+      tintDark: "rgba(201,123,123,0.18)", accentDark: "#E3A6A6",
+    },
+    peach: {
+      tint: "#FBE7D2", accent: "#D2914E",
+      tintDark: "rgba(210,145,78,0.18)", accentDark: "#E5B074",
+    },
+    lavender: {
+      tint: "#E0DBF4", accent: "#7E70CE",
+      tintDark: "rgba(126,112,206,0.22)", accentDark: "#A99CE6",
+    },
+    mint: {
+      tint: "#D3EDE2", accent: "#489C80",
+      tintDark: "rgba(72,156,128,0.18)", accentDark: "#6CC4A6",
+    },
+    coral: {
+      tint: "#F8CFC4", accent: "#D9765F",
+      tintDark: "rgba(217,118,95,0.18)", accentDark: "#EC9583",
+    },
+    sky: {
+      tint: "#D8E7F6", accent: "#4D86BE",
+      tintDark: "rgba(77,134,190,0.18)", accentDark: "#7FB0DC",
+    },
+  },
 };
 
 module.exports = { primitives };

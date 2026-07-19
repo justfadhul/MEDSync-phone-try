@@ -73,6 +73,23 @@ const semantic = {
   // Destructive actions use a NEUTRAL treatment, never red (red = emergency).
   "action-destructive": { light: p.gray[700], dark: p.gray[300] },
   "action-destructive-hover": { light: p.gray[800], dark: p.gray[200] },
+
+  // --- Categorical surface pastels (WAYFINDING, not status) ------------------
+  // Soft per-area tints + accents. Purely decorative: they carry "which area"
+  // and nothing about clinical state, so they never touch the red/green/amber
+  // channel. `tint-*` = card background, `accent-*` = icon chip / label / link.
+  "tint-rose": { light: p.pastel.rose.tint, dark: p.pastel.rose.tintDark },
+  "tint-peach": { light: p.pastel.peach.tint, dark: p.pastel.peach.tintDark },
+  "tint-lavender": { light: p.pastel.lavender.tint, dark: p.pastel.lavender.tintDark },
+  "tint-mint": { light: p.pastel.mint.tint, dark: p.pastel.mint.tintDark },
+  "tint-coral": { light: p.pastel.coral.tint, dark: p.pastel.coral.tintDark },
+  "tint-sky": { light: p.pastel.sky.tint, dark: p.pastel.sky.tintDark },
+  "accent-rose": { light: p.pastel.rose.accent, dark: p.pastel.rose.accentDark },
+  "accent-peach": { light: p.pastel.peach.accent, dark: p.pastel.peach.accentDark },
+  "accent-lavender": { light: p.pastel.lavender.accent, dark: p.pastel.lavender.accentDark },
+  "accent-mint": { light: p.pastel.mint.accent, dark: p.pastel.mint.accentDark },
+  "accent-coral": { light: p.pastel.coral.accent, dark: p.pastel.coral.accentDark },
+  "accent-sky": { light: p.pastel.sky.accent, dark: p.pastel.sky.accentDark },
 };
 
 module.exports = { semantic };
