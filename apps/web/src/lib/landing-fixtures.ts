@@ -99,6 +99,27 @@ export const F7_RECEIPTS: { mechanism: string; detail: string; file: string }[] 
   },
 ];
 
+// F_HERO — the hero's proof-of-loop, shown as two overlapping SOLID cards. A
+// home READING (not a dose) crosses a patient-specific target after hours; it
+// reaches the on-call clinician within the minute, who reviews it. The resolved
+// mark is BRAND / neutral — never green: colour stays a clinical signal, and a
+// reassuring green would itself be a clinical claim (design system §2).
+export const F_HERO_READING = {
+  who: "A.N.",
+  context: "Home · 3 days after discharge",
+  reading: "Capillary glucose",
+  value: "14.2",
+  unit: "mmol/L",
+  status: "Above target" as const,
+  time: "22:14",
+};
+export const F_HERO_RESPONSE = {
+  action: "Flagged to on-call",
+  actor: "Dr. K.",
+  note: "Seen · patient called back",
+  time: "22:15",
+};
+
 // F8 — horizons. What ships now, next, and what is genuinely research (named as
 // research, never a product line — and never a dose value).
 export const F8_HORIZONS: { when: string; items: string[]; research?: boolean }[] = [

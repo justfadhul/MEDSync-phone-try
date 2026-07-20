@@ -54,6 +54,7 @@ const eslintConfig = [
       "src/components/landing/**/*.{ts,tsx}",
       "src/components/marketing/**/*.{ts,tsx}",
       "src/app/page.tsx",
+      "src/app/get-started/**/*.{ts,tsx}",
     ],
     rules: {
       "no-restricted-imports": "off",

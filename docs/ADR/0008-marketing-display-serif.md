@@ -19,8 +19,8 @@ as the `font-display` utility.
 
 It is **fenced to marketing code only**: an ESLint `no-restricted-syntax` rule
 flags any `font-display` string outside `components/landing/**`,
-`components/marketing/**`, and `app/page.tsx`. Product surfaces stay on
-`font-sans` / `font-mono`.
+`components/marketing/**`, and the public marketing routes (`app/page.tsx`,
+`app/get-started/**`). Product surfaces stay on `font-sans` / `font-mono`.
 
 ## Rationale
 - Editorial credibility on public surfaces without touching clinical typography.

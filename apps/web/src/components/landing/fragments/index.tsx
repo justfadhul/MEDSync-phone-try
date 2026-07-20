@@ -8,6 +8,7 @@ export { CareTeamFeed } from "./care-team-feed";
 export { OfflineSms } from "./offline-sms";
 export { Receipts } from "./receipts";
 export { Horizons } from "./horizons";
+export { HeroProof } from "./hero-proof";
 
 // A small, quiet marker placed next to a fragment cluster — signals the data is
 // illustrative without a disclaimer paragraph. Neutral only.

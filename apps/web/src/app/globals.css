@@ -48,6 +48,23 @@ html {
   }
 }
 
+/* Hero wash — a soft brand-tinted gradient, NOT an image. Semantic tokens only
+   (no raw hex): a diffuse brand-subtle bloom over the page surface, fading to
+   the neutral page colour. Decorative; carries no clinical meaning. */
+.hero-wash {
+  background-image:
+    radial-gradient(
+      60% 55% at 78% 8%,
+      var(--ms-brand-subtle) 0%,
+      transparent 60%
+    ),
+    radial-gradient(
+      70% 60% at 8% 0%,
+      var(--ms-surface-secondary) 0%,
+      transparent 55%
+    );
+}
+
 /* Scroll-reveal: fade-and-rise, applied only when motion isn't reduced. */
 @media (prefers-reduced-motion: no-preference) {
   .reveal {

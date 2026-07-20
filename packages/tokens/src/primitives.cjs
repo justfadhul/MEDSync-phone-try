@@ -108,7 +108,7 @@ const primitives = {
   // utilities via @supports / prefers-reduced-transparency.
   // -------------------------------------------------------------------------
   glass: {
-    navBg: "rgba(249,250,251,0.72)", // ~surface-page, translucent
+    navBg: "rgba(249,250,251,0.88)", // ~surface-page, translucent. 0.88 (not lower) so secondary text on the nav clears WCAG AA (worst-case ~5.5:1) even when a dark element scrolls beneath it — contrast safety outranks the glass look (design-system §E).
     navBorder: "rgba(17,24,39,0.08)",
     navShadow: "0 1px 0 rgba(255,255,255,0.6) inset, 0 6px 20px -14px rgba(16,24,40,0.28)",
     panelBg: "rgba(255,255,255,0.60)",
