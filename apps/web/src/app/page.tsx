@@ -43,9 +43,9 @@ function FloatTile({ d, className }: { d: string; className?: string }) {
 // file with a realistic image (see the generation prompts) and, if you export
 // as .jpg, update the extension here. The centre card sits tallest and in front.
 const PORTRAITS = [
-  { src: "/welcome/portrait-1.svg", alt: "Illustrative portrait — a Ugandan doctor", cls: "z-10 mt-4 h-52 w-24 sm:h-56 sm:w-28" },
-  { src: "/welcome/portrait-2.svg", alt: "Illustrative portrait — a Ugandan nurse", cls: "z-20 h-56 w-24 sm:h-64 sm:w-28" },
-  { src: "/welcome/portrait-3.svg", alt: "Illustrative portrait — a community health worker", cls: "z-10 mt-8 h-48 w-24 sm:h-52 sm:w-28" },
+  { src: "/welcome/portrait-1.svg", alt: "Illustrative portrait — a Ugandan doctor", cls: "z-10 mt-5 h-56 w-24 sm:h-64 sm:w-28" },
+  { src: "/welcome/portrait-2.svg", alt: "Illustrative portrait — a Ugandan nurse", cls: "z-20 h-60 w-24 sm:h-72 sm:w-28" },
+  { src: "/welcome/portrait-3.svg", alt: "Illustrative portrait — a community health worker", cls: "z-10 mt-10 h-52 w-24 sm:h-60 sm:w-28" },
 ];
 
 export default function Welcome() {
