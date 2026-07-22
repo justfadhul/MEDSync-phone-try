@@ -42,38 +42,38 @@ export default function Welcome() {
     <main className="grid min-h-dvh w-full md:grid-cols-[1.05fr_0.95fr]">
       {/* LEFT — message + action */}
       <div className="bg-surface-primary flex flex-col justify-between px-8 py-10 sm:px-14 sm:py-14">
-        <div>
+        <div className="rise">
           <Wordmark />
-          <span className="bg-brand-accent mt-4 block h-1 w-16 rounded-full" aria-hidden="true" />
+          <span className="bg-brand-accent accent-sweep mt-4 block h-1 w-16 rounded-full" aria-hidden="true" />
         </div>
 
         <div className="max-w-lg py-10">
-          <p className="text-content-tertiary text-sm font-medium">👋 Welcome to MedSync</p>
-          <h1 className="text-content-primary mt-3 text-3xl font-bold leading-tight tracking-tight sm:text-4xl lg:text-5xl">
+          <p className="rise text-content-tertiary text-sm font-medium" style={{ animationDelay: "0.1s" }}>👋 Welcome to MedSync</p>
+          <h1 className="rise text-content-primary mt-3 text-3xl font-bold leading-tight tracking-tight sm:text-4xl lg:text-5xl" style={{ animationDelay: "0.18s" }}>
             A digital hospital that doesn&rsquo;t stop at the gate.
           </h1>
-          <p className="text-content-secondary mt-5 max-w-md text-[15px]">
+          <p className="rise text-content-secondary mt-5 max-w-md text-[15px]" style={{ animationDelay: "0.26s" }}>
             One record for the whole hospital — wards, vitals, medications,
             appointments — that stays open after the patient goes home.
           </p>
 
-          <div className="mt-9 flex flex-col gap-4 sm:flex-row sm:items-center">
+          <div className="rise mt-9 flex flex-col gap-4 sm:flex-row sm:items-center" style={{ animationDelay: "0.34s" }}>
             <Link
               href="/get-started"
-              className="neu-btn text-content-on-brand focus-visible:outline-brand-primary inline-flex h-12 items-center justify-center gap-2 rounded-full px-7 text-sm font-semibold transition-[filter] hover:brightness-[1.06] focus-visible:outline-2 focus-visible:outline-offset-2"
+              className="neu-btn group text-content-on-brand focus-visible:outline-brand-primary inline-flex h-12 items-center justify-center gap-2 rounded-full px-7 text-sm font-semibold transition-[filter,transform,box-shadow] duration-200 hover:-translate-y-0.5 hover:brightness-[1.06] focus-visible:outline-2 focus-visible:outline-offset-2 active:translate-y-0"
             >
               Get started
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" aria-hidden="true">
                 <path d="M5 12h14M13 6l6 6-6 6" />
               </svg>
             </Link>
-            <Link href="/sign-in" className="text-content-secondary hover:text-content-primary text-sm font-medium">
+            <Link href="/sign-in" className="text-content-secondary hover:text-content-primary text-sm font-medium transition-colors">
               I already have an account
             </Link>
           </div>
         </div>
 
-        <p className="text-content-tertiary text-xs">
+        <p className="rise text-content-tertiary text-xs" style={{ animationDelay: "0.5s" }}>
           Built by and for Uganda&rsquo;s medical community.
         </p>
       </div>
@@ -81,26 +81,33 @@ export default function Welcome() {
       {/* RIGHT — pictorial section: a staggered portrait cluster of Uganda's
           medical community, with the honest onboarding card overlapping. */}
       <div className="bg-surface-tertiary flex flex-col justify-between px-8 py-10 sm:px-14 sm:py-14">
-        <h2 className="text-content-primary max-w-[18ch] text-xl font-bold tracking-tight sm:text-2xl">
+        <h2 className="rise text-content-primary max-w-[18ch] text-xl font-bold tracking-tight sm:text-2xl" style={{ animationDelay: "0.2s" }}>
           Care that follows the patient home.
         </h2>
 
         <div className="relative py-8">
-          {/* portrait cluster */}
-          <div className="flex justify-center">
+          {/* portrait cluster — the whole group floats slowly; each card rises in
+              on load and lifts on hover (hover transform lives on the img, so it
+              stays independent of the wrapper's ambient float). */}
+          <div className="float-slow flex justify-center">
             {PORTRAITS.map((pt, i) => (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
+              <span
                 key={pt.src}
-                src={pt.src}
-                alt={pt.alt}
-                className={`bg-surface-secondary rounded-[20px] object-cover shadow-md ${pt.cls} ${i > 0 ? "-ml-5" : ""}`}
-              />
+                className={`portrait-in bg-surface-secondary relative block overflow-hidden rounded-[20px] shadow-md ${pt.cls} ${i > 0 ? "-ml-5" : ""}`}
+                style={{ animationDelay: `${0.4 + i * 0.12}s` }}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={pt.src}
+                  alt={pt.alt}
+                  className="h-full w-full object-cover transition-transform duration-500 ease-out hover:scale-[1.05]"
+                />
+              </span>
             ))}
           </div>
 
           {/* honest onboarding card — overlaps ON TOP of the cluster (z-30) */}
-          <div className="neu-float relative z-30 mx-auto mt-5 flex items-start gap-3 rounded-2xl p-4 sm:absolute sm:bottom-4 sm:left-0 sm:mt-0 sm:max-w-[15rem]">
+          <div className="neu-float rise relative z-30 mx-auto mt-5 flex items-start gap-3 rounded-2xl p-4 sm:absolute sm:bottom-4 sm:left-0 sm:mt-0 sm:max-w-[15rem]" style={{ animationDelay: "0.75s" }}>
             <span className="bg-brand-subtle text-brand-primary grid h-9 w-9 flex-none place-items-center rounded-xl">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="h-5 w-5" aria-hidden="true">
                 <circle cx="12" cy="12" r="9" /><path d="M3 12h18M12 3c2.5 2.6 3.8 5.7 3.8 9S14.5 18.4 12 21c-2.5-2.6-3.8-5.7-3.8-9S9.5 5.6 12 3Z" strokeLinecap="round" strokeLinejoin="round" />
@@ -115,7 +122,7 @@ export default function Welcome() {
           </div>
         </div>
 
-        <div className="flex items-center justify-between">
+        <div className="rise flex items-center justify-between" style={{ animationDelay: "0.9s" }}>
           <span className="border-line-subtle text-content-tertiary inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 font-mono text-[10px] tracking-wider uppercase">
             <span className="bg-content-tertiary h-1 w-1 rounded-full" />
             Illustrative imagery

@@ -95,6 +95,47 @@ html {
   box-shadow: var(--ms-neu-inset);
 }
 
+/* --- Splash "life": entrance + ambient motion ------------------------------
+   All gated behind prefers-reduced-motion: no-preference. Elements are visible
+   by DEFAULT (no animation) so reduce-motion / no-CSS users lose nothing. */
+@media (prefers-reduced-motion: no-preference) {
+  /* Staggered fade-and-rise on load. animation-delay is set inline per element.
+     fill-mode both => starts hidden, holds the final (visible) state. */
+  .rise {
+    opacity: 0;
+    animation: ms-rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+  @keyframes ms-rise {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: none; }
+  }
+  /* Portrait cards drift in from slightly below with a touch of scale. */
+  .portrait-in {
+    opacity: 0;
+    animation: ms-portrait 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+  @keyframes ms-portrait {
+    from { opacity: 0; transform: translateY(26px) scale(0.96); }
+    to   { opacity: 1; transform: none; }
+  }
+  /* Very slow ambient float on the whole cluster — alive, not busy. Applied to
+     the wrapper so each card's hover transform stays independent. */
+  .float-slow { animation: ms-float 7s ease-in-out infinite; }
+  @keyframes ms-float {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-7px); }
+  }
+  /* The brand accent underline sweeps out on load. */
+  .accent-sweep {
+    transform-origin: left center;
+    animation: ms-sweep 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) 0.15s both;
+  }
+  @keyframes ms-sweep {
+    from { transform: scaleX(0); }
+    to   { transform: scaleX(1); }
+  }
+}
+
 /* Scroll-reveal: fade-and-rise, applied only when motion isn't reduced. */
 @media (prefers-reduced-motion: no-preference) {
   .reveal {
