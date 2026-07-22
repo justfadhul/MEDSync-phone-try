@@ -92,18 +92,22 @@ on conflict (key) do update set name = excluded.name, cadre_id = excluded.cadre_
 -- requires_mfa / is_admin are safety-relevant defaults. The exact MFA policy
 -- per role and any role→permission mapping are CSO decisions ([GATE A]); these
 -- are sensible defaults (all clinical + records + admin require MFA).
-insert into public.roles (key, label, requires_mfa, is_admin) values
-  ('admin',            'Administrator',   true,  true),
-  ('doctor',           'Doctor',          true,  false),
-  ('nurse',            'Nurse',           true,  false),
-  ('pharmacist',       'Pharmacist',      true,  false),
-  ('clinical_officer', 'Clinical Officer',true,  false),
-  ('records_clerk',    'Records Clerk',   true,  false),
-  ('patient',          'Patient',         false, false)
+-- superadmin is the platform owner / approver (Gate O.5) — strictly narrower
+-- than admin. It is the only role with is_superadmin.
+insert into public.roles (key, label, requires_mfa, is_admin, is_superadmin) values
+  ('superadmin',       'Platform Owner',  true,  false, true),
+  ('admin',            'Administrator',   true,  true,  false),
+  ('doctor',           'Doctor',          true,  false, false),
+  ('nurse',            'Nurse',           true,  false, false),
+  ('pharmacist',       'Pharmacist',      true,  false, false),
+  ('clinical_officer', 'Clinical Officer',true,  false, false),
+  ('records_clerk',    'Records Clerk',   true,  false, false),
+  ('patient',          'Patient',         false, false, false)
 on conflict (key) do update
   set label = excluded.label,
       requires_mfa = excluded.requires_mfa,
-      is_admin = excluded.is_admin;
+      is_admin = excluded.is_admin,
+      is_superadmin = excluded.is_superadmin;
 
 -- --- facility (D5 taxonomy: level + ownership) -------------------------------
 insert into public.facilities (key, name, level, ownership) values
