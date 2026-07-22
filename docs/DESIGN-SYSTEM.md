@@ -55,14 +55,19 @@ theme.cjs        resolves tokens → CSS vars / Tailwind colour groups
 
 ## 3. Colour
 
-### Brand — blue
-Centred on the reference primary `#5A81FA`. Marks intent and interaction.
+### Brand — teal
+Centred on the reference primary `#427791` (AA on white). Marks intent and
+interaction. `brand-accent` `#60B1D6` is the bright cyan used on **non-text
+decoration only** (it is too light to carry white body text at AA); the pill
+button gradient runs `brand-grad-from` → `brand-grad-to`, chosen so white text
+clears AA across the whole sweep.
 
 | Token | Light | Dark |
 | --- | --- | --- |
-| `brand-primary` | `#3E63DD` | `#5A81FA` |
-| `brand-cta` | `#2C3D8F` | `#293F99` |
-| `brand-subtle` | `#EEF2FF` | `#1B2559` |
+| `brand-primary` | `#427791` | `#4E90AE` |
+| `brand-cta` | `#2E5362` | `#386577` |
+| `brand-subtle` | `#EEF4F7` | `#172831` |
+| `brand-accent` | `#60B1D6` | `#60B1D6` |
 
 ### Neutrals
 A single gray ramp (`#F9FAFB` → `#030712`) carries surfaces, text, and lines in both
@@ -92,9 +97,13 @@ coloured by how sick a patient is; that is always the pill's job.
 
 ## 4. Typography
 
-- **Sans:** Helvetica Neue / system stack — UI and prose.
+- **Sans:** **Poppins** (the brand typeface) — UI, prose, and headings.
+  Self-hosted on web via `next/font` (`--font-poppins`), referenced first by the
+  `font-sans` token; a system sans stack is the fallback.
 - **Mono:** SF Mono / system mono — data, codes (MRN), timestamps, KPI labels.
-- Tight tracking on large headings (`-0.02em`), tabular numerals for all metrics.
+- **Display serif** (`font-display`) remains defined and marketing-fenced
+  (ADR-0008) but is not used on the current teal/Poppins surfaces.
+- Bold weights on headings, tabular numerals for all metrics.
 
 ---
 
@@ -191,6 +200,19 @@ serif stack — no paid licence). It is **fenced to marketing code only**
 rule; product UI stays on `font-sans` (UI/prose) and `font-mono` (data, codes,
 MRNs, timestamps). Rationale: editorial credibility on public surfaces without
 changing the clinical surface typography.
+
+## Amendment — teal rebrand + neumorphic splash (IMG_8297)
+
+The brand palette moved from blue to **teal** (`#427791`, gradient accent
+`#60B1D6`) and the UI typeface to **Poppins**, applied app-wide from the token
+layer. The **one safety invariant is unchanged**: the saturated red/green/amber
+trio stays reserved for clinical status (`StatusPill` / `ThresholdChart`) and
+the token tests still enforce it. A soft **neumorphic** surface style backs the
+desktop splash — a cool `surface-canvas` backdrop plus `--ms-neu-*` elevation
+shadows (token-driven, consumed by `.neu-*` utilities, never inline). The splash
+carries **no fabricated social proof** (no member count, illustrative sample
+data marked as such) and honours the no-dose rule (drug name + time + adherence
+only).
 
 ## Amendment — glass materials (marketing chrome only)
 

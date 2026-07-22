@@ -7,9 +7,12 @@
 // =============================================================================
 
 const fonts = {
-  // Primary UI family. Swap the first entry when licensing is resolved.
+  // Primary UI family: Poppins (the brand typeface — see IMG_8297). Self-hosted
+  // by next/font on web via the --font-poppins CSS variable (app/layout.tsx);
+  // the literal "Poppins" and system stack are fallbacks (mobile / no-var).
   sans: [
-    "Neue Haas Grotesk",
+    "var(--font-poppins)",
+    "Poppins",
     "Helvetica Neue",
     "Helvetica",
     "Arial",

@@ -11,6 +11,9 @@ const primitives = {
   black: "#000000",
   transparent: "transparent",
 
+  // Cool light canvas behind the neumorphic splash surface (see IMG_8295).
+  canvas: "#E9EEF3",
+
   gray: {
     50: "#F9FAFB",
     100: "#F3F4F6",
@@ -25,20 +28,25 @@ const primitives = {
     950: "#030712",
   },
 
-  // Brand: blue-600 primary (AA on white), blue-900 dark CTA background.
-  // Centred on the reference primary #5A81FA (=blue-500) / secondary #2C3D8F.
-  blue: {
-    50: "#EEF2FF",
-    100: "#DCE3FF",
-    200: "#C0CCFF",
-    300: "#9DB0FF",
-    400: "#7590FB",
-    500: "#5A81FA",
-    600: "#3E63DD",
-    700: "#3050C0",
-    800: "#293F99",
-    900: "#2C3D8F",
-    950: "#1B2559",
+  // Brand: teal. Centred on the reference primary #427791 (=teal-600, AA on
+  // white) with teal-800 as the dark CTA background. #60B1D6 (teal-400) is the
+  // bright accent / gradient light-end, used on NON-text decoration only (it is
+  // too light to carry white body text at AA). `gradFrom`/`gradTo` are the pill
+  // button gradient, chosen so white text clears AA across the whole sweep.
+  teal: {
+    50: "#EEF4F7",
+    100: "#D8E8EF",
+    200: "#B4D2DF",
+    300: "#8AC4DD",
+    400: "#60B1D6",
+    500: "#4E90AE",
+    600: "#427791",
+    700: "#386577",
+    800: "#2E5362",
+    900: "#26424B",
+    950: "#172831",
+    gradFrom: "#427791", // = teal-600; white text ≥4.9:1 across the whole sweep
+    gradTo: "#386577",
   },
 
   // Clinical emergency ONLY. Deliberately minimal so red cannot creep into
@@ -116,6 +124,18 @@ const primitives = {
     panelShadow: "0 1px 2px rgba(16,24,40,0.05), 0 20px 44px -26px rgba(16,24,40,0.38)",
     blur: "blur(12px) saturate(140%)",
     blurStrong: "blur(16px) saturate(140%)",
+  },
+
+  // -------------------------------------------------------------------------
+  // NEUMORPHIC ELEVATION — soft shadows for the splash surface (IMG_8295).
+  // Shadows, not palette colours (rgba ink/light only). Injected as CSS vars
+  // and consumed by the .neu-* utilities in globals.css, never inline.
+  // -------------------------------------------------------------------------
+  elevation: {
+    soft: "0 24px 60px -24px rgba(23,40,49,0.28), 0 4px 12px -6px rgba(23,40,49,0.10)",
+    float: "0 10px 24px -8px rgba(23,40,49,0.26), 0 2px 4px rgba(23,40,49,0.10)",
+    btn: "0 10px 22px -8px rgba(46,83,98,0.55), inset 0 1px 0 rgba(255,255,255,0.28)",
+    inset: "inset 0 1px 0 rgba(255,255,255,0.7), inset 0 -1px 0 rgba(23,40,49,0.04)",
   },
 };
 

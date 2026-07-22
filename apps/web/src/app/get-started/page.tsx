@@ -77,7 +77,7 @@ export default async function GetStarted({
 
       <main className="mx-auto w-full max-w-xl flex-1 px-6 py-16 md:py-24">
         <p className="text-content-tertiary font-mono text-xs tracking-[0.14em] uppercase">{c.eyebrow}</p>
-        <h1 className="text-content-primary font-display mt-3 text-3xl font-medium tracking-tight sm:text-4xl">
+        <h1 className="text-content-primary mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
           {c.heading}
         </h1>
         <p className="text-content-secondary mt-5 text-base">{c.body}</p>

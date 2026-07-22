@@ -65,6 +65,36 @@ html {
     );
 }
 
+/* --- Neumorphic splash surface (IMG_8295) ---------------------------------
+   Soft cool canvas + gently shadowed floating surfaces. Colours/shadows come
+   from the token layer (--ms-surface-canvas, --ms-neu-*). No raw values. */
+.splash-canvas {
+  background-color: var(--ms-surface-canvas);
+  background-image:
+    radial-gradient(80% 70% at 80% -10%, var(--ms-brand-subtle) 0%, transparent 55%),
+    radial-gradient(70% 60% at 0% 110%, var(--ms-surface-primary) 0%, transparent 50%);
+}
+.neu-surface {
+  background-color: var(--ms-surface-primary);
+  box-shadow: var(--ms-neu-soft), var(--ms-neu-inset);
+}
+.neu-float {
+  background-color: var(--ms-surface-primary);
+  box-shadow: var(--ms-neu-float);
+}
+.neu-btn {
+  background-image: linear-gradient(
+    180deg,
+    var(--ms-brand-grad-from) 0%,
+    var(--ms-brand-grad-to) 100%
+  );
+  box-shadow: var(--ms-neu-btn);
+}
+.neu-inset-field {
+  background-color: var(--ms-surface-page);
+  box-shadow: var(--ms-neu-inset);
+}
+
 /* Scroll-reveal: fade-and-rise, applied only when motion isn't reduced. */
 @media (prefers-reduced-motion: no-preference) {
   .reveal {

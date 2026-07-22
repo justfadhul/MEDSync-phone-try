@@ -35,6 +35,15 @@ const glassVars = {
   "--ms-glass-blur-strong": g.blurStrong,
 };
 
+// Neumorphic elevation (shadows, not colours) — consumed by .neu-* utilities.
+const e = primitives.elevation;
+const neuVars = {
+  "--ms-neu-soft": e.soft,
+  "--ms-neu-float": e.float,
+  "--ms-neu-btn": e.btn,
+  "--ms-neu-inset": e.inset,
+};
+
 const colors = {
   transparent: "transparent",
   current: "currentColor",
@@ -63,7 +72,7 @@ const preset = {
   plugins: [
     plugin(function ({ addBase }) {
       addBase({
-        ":root": { ...cssVars("light"), ...glassVars },
+        ":root": { ...cssVars("light"), ...glassVars, ...neuVars },
         ".theme-dark": cssVars("dark"),
       });
     }),
