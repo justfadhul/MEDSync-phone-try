@@ -27,23 +27,66 @@ insert into public.councils (key, name, abbreviation) values
 on conflict (key) do update
   set name = excluded.name, abbreviation = excluded.abbreviation;
 
--- --- cadres (anchored to a council) ------------------------------------------
-insert into public.cadres (key, name, council_id, requires_registration)
-select v.key, v.name, c.id, true
+-- --- cadres (national catalogue) ---------------------------------------------
+-- CLINICAL cadres are anchored to a council (council_key set) — enforced as a
+-- DB invariant (0006: a clinical cadre must have a council). NON-CLINICAL cadres
+-- (reception, records, administration) have no council and grant no clinical
+-- scope. `is_clinical` is the flag the registration branch keys off (Gate O.4);
+-- `has_specialty` gates the specialty picker (Gate O.4 F4). LEFT JOIN so a null
+-- council_key yields a null council_id for non-clinical rows.
+insert into public.cadres (key, name, council_id, is_clinical, has_specialty, requires_registration)
+select v.key, v.name, c.id, v.is_clinical, v.has_specialty, v.requires_registration
 from (values
-  ('medical_officer',    'Medical Officer',            'umdpc'),
-  ('consultant_physician','Consultant Physician',      'umdpc'),
-  ('medical_intern',     'Medical Intern',             'umdpc'),
-  ('registered_nurse',   'Registered Nurse',           'unmc'),
-  ('enrolled_nurse',     'Enrolled Nurse',             'unmc'),
-  ('midwife',            'Midwife',                    'unmc'),
-  ('pharmacist',         'Pharmacist',                 'pbu'),
-  ('pharmacy_technician','Pharmacy Technician',        'pbu'),
-  ('clinical_officer',   'Clinical Officer',           'ahpc')
-) as v(key, name, council_key)
-join public.councils c on c.key = v.council_key
+  -- key,                     name,                       council, clinical, specialty, requires_reg
+  ('medical_officer',        'Medical Officer',           'umdpc', true,  true,  true),
+  ('consultant_physician',   'Consultant Physician',      'umdpc', true,  true,  true),
+  ('medical_intern',         'Medical Intern',            'umdpc', true,  false, true),
+  ('dental_surgeon',         'Dental Surgeon',            'umdpc', true,  true,  true),
+  ('registered_nurse',       'Registered Nurse',          'unmc',  true,  true,  true),
+  ('enrolled_nurse',         'Enrolled Nurse',            'unmc',  true,  false, true),
+  ('midwife',                'Midwife',                   'unmc',  true,  false, true),
+  ('enrolled_midwife',       'Enrolled Midwife',          'unmc',  true,  false, true),
+  ('pharmacist',             'Pharmacist',                'pbu',   true,  false, true),
+  ('pharmacy_technician',    'Pharmacy Technician',       'pbu',   true,  false, true),
+  ('clinical_officer',       'Clinical Officer',          'ahpc',  true,  false, true),
+  ('laboratory_technologist','Laboratory Technologist',   'ahpc',  true,  false, true),
+  ('radiographer',           'Radiographer',              'ahpc',  true,  false, true),
+  ('physiotherapist',        'Physiotherapist',           'ahpc',  true,  false, true),
+  ('anaesthetic_officer',    'Anaesthetic Officer',       'ahpc',  true,  false, true),
+  ('nutritionist',           'Nutritionist',              'ahpc',  true,  false, true),
+  -- non-clinical (no council; no clinical scope)
+  ('receptionist',           'Receptionist',              null,    false, false, false),
+  ('records_officer',        'Records Officer',           null,    false, false, false),
+  ('hospital_administrator', 'Hospital Administrator',    null,    false, false, false),
+  ('cashier',                'Cashier / Billing Officer', null,    false, false, false)
+) as v(key, name, council_key, is_clinical, has_specialty, requires_registration)
+left join public.councils c on c.key = v.council_key
 on conflict (key) do update
-  set name = excluded.name, council_id = excluded.council_id;
+  set name = excluded.name,
+      council_id = excluded.council_id,
+      is_clinical = excluded.is_clinical,
+      has_specialty = excluded.has_specialty,
+      requires_registration = excluded.requires_registration;
+
+-- --- cadre grades (role/grade dropdown options) ------------------------------
+insert into public.cadre_grades (key, name, cadre_id)
+select v.key, v.name, ca.id
+from (values
+  ('mo_medical_officer',   'Medical Officer',           'medical_officer'),
+  ('mo_senior',            'Senior Medical Officer',    'medical_officer'),
+  ('mo_principal',         'Principal Medical Officer', 'medical_officer'),
+  ('cons_consultant',      'Consultant',                'consultant_physician'),
+  ('cons_senior',          'Senior Consultant',         'consultant_physician'),
+  ('rn_nursing_officer',   'Nursing Officer',           'registered_nurse'),
+  ('rn_senior',            'Senior Nursing Officer',    'registered_nurse'),
+  ('rn_principal',         'Principal Nursing Officer', 'registered_nurse'),
+  ('pharm_pharmacist',     'Pharmacist',                'pharmacist'),
+  ('pharm_senior',         'Senior Pharmacist',         'pharmacist'),
+  ('co_clinical_officer',  'Clinical Officer',          'clinical_officer'),
+  ('co_senior',            'Senior Clinical Officer',   'clinical_officer')
+) as v(key, name, cadre_key)
+join public.cadres ca on ca.key = v.cadre_key
+on conflict (key) do update set name = excluded.name, cadre_id = excluded.cadre_id;
 
 -- --- app roles (public.roles from migration 0002) ----------------------------
 -- requires_mfa / is_admin are safety-relevant defaults. The exact MFA policy
@@ -62,10 +105,11 @@ on conflict (key) do update
       requires_mfa = excluded.requires_mfa,
       is_admin = excluded.is_admin;
 
--- --- facility ----------------------------------------------------------------
-insert into public.facilities (key, name, level) values
-  ('mulago_nrh', 'Mulago National Referral Hospital', 'national_referral_hospital')
-on conflict (key) do update set name = excluded.name, level = excluded.level;
+-- --- facility (D5 taxonomy: level + ownership) -------------------------------
+insert into public.facilities (key, name, level, ownership) values
+  ('mulago_nrh', 'Mulago National Referral Hospital', 'national_referral_hospital', 'public')
+on conflict (key) do update
+  set name = excluded.name, level = excluded.level, ownership = excluded.ownership;
 
 -- --- department: Internal Medicine ------------------------------------------
 insert into public.departments (key, name, facility_id)
@@ -90,3 +134,37 @@ from (values
 ) as v(key, name)
 join public.departments d on d.key = 'internal_medicine'
 on conflict (key) do update set name = excluded.name, department_id = excluded.department_id;
+
+-- --- D1 geography: districts (central subset — full UBOS set pending) ---------
+insert into public.districts (key, name) values
+  ('kampala', 'Kampala'),
+  ('wakiso',  'Wakiso'),
+  ('mukono',  'Mukono'),
+  ('mpigi',   'Mpigi'),
+  ('jinja',   'Jinja')
+on conflict (key) do update set name = excluded.name;
+
+-- --- D1 geography: subcounties (cascading by district) -----------------------
+insert into public.subcounties (key, name, district_id)
+select v.key, v.name, d.id
+from (values
+  ('kla_central',            'Kampala Central Division', 'kampala'),
+  ('kla_kawempe',            'Kawempe Division',         'kampala'),
+  ('kla_makindye',           'Makindye Division',        'kampala'),
+  ('kla_nakawa',             'Nakawa Division',          'kampala'),
+  ('kla_rubaga',             'Rubaga Division',          'kampala'),
+  ('wak_nansana',            'Nansana',                  'wakiso'),
+  ('wak_kira',               'Kira',                     'wakiso'),
+  ('wak_makindye_ssabagabo', 'Makindye-Ssabagabo',       'wakiso'),
+  ('muk_central',            'Mukono Central',           'mukono'),
+  ('muk_goma',               'Goma',                     'mukono')
+) as v(key, name, district_key)
+join public.districts d on d.key = v.district_key
+on conflict (key) do update set name = excluded.name, district_id = excluded.district_id;
+
+-- --- reference-data versions (auditable dataset versioning) ------------------
+insert into public.reference_data_versions (dataset, version, notes) values
+  ('cadres',     1, 'National cadre catalogue v1 — UMDPC/UNMC/Pharmacy Board/AHPC + non-clinical.'),
+  ('geography',  1, 'Central districts subset (Kampala + neighbours). Full UBOS dataset pending [GATE A].'),
+  ('facilities', 1, 'Mulago National Referral Hospital.')
+on conflict (dataset, version) do update set notes = excluded.notes;
