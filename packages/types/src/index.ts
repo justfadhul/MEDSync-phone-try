@@ -104,6 +104,71 @@ export type Database = {
         };
         Relationships: [];
       };
+      // Staff onboarding application (migration 0009). Owner-scoped. Only the
+      // `status` is read at sign-in to resolve the honest pending/ready state.
+      staff_applications: {
+        Row: {
+          id: string;
+          user_id: string;
+          is_returning: boolean;
+          status: string;
+          created_at: string;
+          updated_at: string;
+          created_by: string | null;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          is_returning?: boolean;
+          status?: string;
+          created_by?: string | null;
+        };
+        Update: {
+          is_returning?: boolean;
+          status?: string;
+        };
+        Relationships: [];
+      };
+      // Hospital onboarding application (migration 0010). Created `submitted`
+      // (pending) and routed to a superadmin. Only `status` is read at sign-in.
+      hospital_applications: {
+        Row: {
+          id: string;
+          submitted_by: string;
+          facility_name: string;
+          official_email: string;
+          official_phone: string | null;
+          district_id: string | null;
+          subcounty_id: string | null;
+          level: string | null;
+          ownership: string | null;
+          registration_no_ct: string | null;
+          licence_doc_path: string | null;
+          status: string;
+          created_at: string;
+          updated_at: string;
+          created_by: string | null;
+        };
+        Insert: {
+          id?: string;
+          submitted_by: string;
+          facility_name: string;
+          official_email: string;
+          official_phone?: string | null;
+          district_id?: string | null;
+          subcounty_id?: string | null;
+          level?: string | null;
+          ownership?: string | null;
+          registration_no_ct?: string | null;
+          licence_doc_path?: string | null;
+          status?: string;
+          created_by?: string | null;
+        };
+        Update: {
+          status?: string;
+        };
+        Relationships: [];
+      };
     };
     Views: Record<never, never>;
     Functions: {
@@ -112,6 +177,10 @@ export type Database = {
         Returns: string[];
       };
       is_admin: {
+        Args: Record<never, never>;
+        Returns: boolean;
+      };
+      is_superadmin: {
         Args: Record<never, never>;
         Returns: boolean;
       };

@@ -1,6 +1,8 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { isMfaSatisfied, isRoleAuthorized } from "./decisions.ts";
+import {
+  isMfaSatisfied, isRoleAuthorized, resolveAccess, pathForAccess,
+} from "./decisions.ts";
 
 test("MFA: role requiring MFA without AAL2 is NOT satisfied", () => {
   assert.equal(isMfaSatisfied({ requiresMfa: true, hasAal2: false }), false);
@@ -46,4 +48,39 @@ test("role: non-holder without the role is denied", () => {
     ),
     false,
   );
+});
+
+// --- resolveAccess (Gate O.6) ------------------------------------------------
+test("access: MFA-required role without AAL2 goes to MFA before anything else", () => {
+  // even with an active application, the second factor is demanded first
+  assert.equal(
+    resolveAccess({ requiresMfa: true, hasAal2: false }, { status: "active" }),
+    "needs_mfa",
+  );
+});
+test("access: patient (no application), MFA satisfied, is ready", () => {
+  assert.equal(resolveAccess({ requiresMfa: false, hasAal2: false }, null), "ready");
+});
+test("access: valid login but application still submitted is pending, not ready", () => {
+  assert.equal(
+    resolveAccess({ requiresMfa: false, hasAal2: false }, { status: "submitted" }),
+    "pending_approval",
+  );
+});
+test("access: application in_review is still pending", () => {
+  assert.equal(
+    resolveAccess({ requiresMfa: true, hasAal2: true }, { status: "in_review" }),
+    "pending_approval",
+  );
+});
+test("access: approved (active) application with MFA satisfied is ready", () => {
+  assert.equal(
+    resolveAccess({ requiresMfa: true, hasAal2: true }, { status: "active" }),
+    "ready",
+  );
+});
+test("paths map each access state to its route", () => {
+  assert.equal(pathForAccess("needs_mfa"), "/mfa");
+  assert.equal(pathForAccess("pending_approval"), "/pending");
+  assert.equal(pathForAccess("ready"), "/dashboard");
 });
