@@ -1,45 +1,119 @@
 import { useCallback } from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, Pressable, Text, View } from "react-native";
 import { useRouter } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
-import Animated, { FadeInDown, useReducedMotion } from "react-native-reanimated";
-import { Button } from "@/components/ui/button";
+import Svg, { Path } from "react-native-svg";
+import Animated, { FadeIn, FadeInDown, useReducedMotion } from "react-native-reanimated";
+import { tokens } from "@medsync/tokens";
 
-// Welcome — the animated hand-off target from the native splash. Background is
-// surface-primary and the logo sits DEAD CENTRE at width 120, exactly as the
-// splash renders it (see app.config.js), so the logo does not jump. The logo is
-// absolutely centred (never moves); only the tagline + buttons block reveals,
-// and only when the OS isn't in reduce-motion. Brand blue on neutrals; no
-// status colours; light only.
-const LOGO = require("../assets/logo.png");
+// Welcome / splash — the mobile counterpart of the web welcome screen, in the
+// teal brand. A staggered portrait cluster of Uganda's medical community over a
+// soft teal blob, one headline, an honest onboarding note (no fabricated
+// count), and the two doors. Photos are illustrative brand imagery. Light only;
+// no clinical status colours. System font + weights (Poppins on RN is a
+// separate follow-up — it needs per-weight family loading).
+const BRAND = tokens["brand-primary"];
+const ON_BRAND = tokens["content-on-brand"];
+
+const PORTRAITS = [
+  { src: require("../assets/welcome/portrait-1.jpg"), w: 96, h: 150, mt: 22, ml: 0, z: 1 },
+  { src: require("../assets/welcome/portrait-2.jpg"), w: 100, h: 178, mt: 0, ml: -14, z: 2 },
+  { src: require("../assets/welcome/portrait-3.jpg"), w: 96, h: 138, mt: 40, ml: -14, z: 1 },
+];
+
+function Mark() {
+  return (
+    <View className="bg-brand-primary h-8 w-8 items-center justify-center rounded-lg">
+      <Svg width={17} height={17} viewBox="0 0 24 24" fill="none" stroke={ON_BRAND} strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round">
+        <Path d="M3 12h4l2 5 4-12 2 7h6" />
+      </Svg>
+    </View>
+  );
+}
 
 export default function Welcome() {
   const router = useRouter();
   const reduce = useReducedMotion();
-
-  // Reveal the app only once this screen has laid out — no flash on hand-off.
   const onLayout = useCallback(() => {
     SplashScreen.hideAsync();
   }, []);
+  const rise = (delay: number) => (reduce ? undefined : FadeInDown.delay(delay).duration(500));
 
   return (
-    <View className="bg-surface-primary flex-1" onLayout={onLayout}>
-      {/* logo, dead centre — identical to the splash position (no jump) */}
-      <View pointerEvents="none" style={StyleSheet.absoluteFill} className="items-center justify-center">
-        <Image source={LOGO} style={{ width: 120, height: 120 }} resizeMode="contain" accessibilityLabel="MedSync" />
-      </View>
+    <View className="bg-surface-page flex-1 px-6 pb-10 pt-16" onLayout={onLayout}>
+      {/* brand */}
+      <Animated.View entering={reduce ? undefined : FadeIn.duration(400)} className="flex-row items-center gap-2">
+        <Mark />
+        <Text className="text-content-primary text-lg font-semibold tracking-tight">MedSync</Text>
+      </Animated.View>
+      <View className="bg-brand-accent mt-3 h-1 w-14 rounded-full" />
 
-      {/* tagline + actions, pinned to the bottom */}
-      <View className="flex-1 justify-end px-6 pb-12">
-        <Animated.View entering={reduce ? undefined : FadeInDown.delay(300).duration(500)} className="gap-3">
-          <View className="mb-2 items-center">
-            <Text className="text-content-primary text-xl font-semibold tracking-tight">MedSync</Text>
-            <Text className="text-content-secondary mt-1 text-sm">Care that continues.</Text>
-          </View>
-          <Button title="Get started" onPress={() => router.push("/onboarding")} />
-          <Button title="I already have an account" variant="ghost" onPress={() => router.push("/sign-in")} />
-        </Animated.View>
-      </View>
+      {/* pictorial cluster over a soft teal blob */}
+      <Animated.View entering={rise(150)} className="mt-8 items-center justify-center">
+        <View
+          className="bg-brand-subtle absolute h-56 w-64 rounded-[36px]"
+          style={{ transform: [{ rotate: "6deg" }] }}
+        />
+        <View className="flex-row items-start justify-center py-4">
+          {PORTRAITS.map((p, i) => (
+            <Image
+              key={i}
+              source={p.src}
+              accessibilityLabel="Illustrative portrait of Uganda's medical community"
+              resizeMode="cover"
+              style={{ width: p.w, height: p.h, marginTop: p.mt, marginLeft: p.ml, borderRadius: 18, zIndex: p.z }}
+            />
+          ))}
+        </View>
+      </Animated.View>
+
+      {/* message */}
+      <Animated.View entering={rise(260)} className="mt-6">
+        <Text className="text-content-primary text-[28px] font-bold leading-[1.1] tracking-tight">
+          A digital hospital that doesn&rsquo;t stop at the gate.
+        </Text>
+        <Text className="text-content-secondary mt-3 text-[15px] leading-6">
+          One record for the whole hospital — that stays open after the patient
+          goes home.
+        </Text>
+      </Animated.View>
+
+      {/* honest onboarding note — no fabricated count */}
+      <Animated.View entering={rise(360)} className="border-line-subtle mt-5 flex-row items-center gap-3 self-start rounded-2xl border px-4 py-3">
+        <View className="bg-brand-subtle h-8 w-8 items-center justify-center rounded-xl">
+          <Svg width={17} height={17} viewBox="0 0 24 24" fill="none" stroke={BRAND} strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
+            <Path d="M3 12a9 9 0 1 0 18 0 9 9 0 0 0-18 0Z" />
+            <Path d="M3 12h18M12 3c2.5 2.6 3.8 5.7 3.8 9S14.5 18.4 12 21c-2.5-2.6-3.8-5.7-3.8-9S9.5 5.6 12 3Z" />
+          </Svg>
+        </View>
+        <Text className="text-content-secondary text-[13px]">
+          <Text className="text-content-primary font-semibold">Now onboarding founding hospitals</Text>
+          {"\n"}Kampala first — the founding cohort is open.
+        </Text>
+      </Animated.View>
+
+      {/* doors */}
+      <Animated.View entering={rise(460)} className="mt-auto gap-3">
+        <Pressable
+          onPress={() => router.push("/onboarding")}
+          accessibilityRole="button"
+          accessibilityLabel="Get started"
+          className="bg-brand-primary h-14 flex-row items-center justify-center gap-2 rounded-full active:opacity-90"
+        >
+          <Text className="text-content-on-brand text-base font-semibold">Get started</Text>
+          <Svg width={19} height={19} viewBox="0 0 24 24" fill="none" stroke={ON_BRAND} strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round">
+            <Path d="M5 12h14M13 6l6 6-6 6" />
+          </Svg>
+        </Pressable>
+        <Pressable
+          onPress={() => router.push("/sign-in")}
+          accessibilityRole="button"
+          accessibilityLabel="I already have an account"
+          className="h-11 items-center justify-center active:opacity-70"
+        >
+          <Text className="text-content-secondary text-[15px] font-medium">I already have an account</Text>
+        </Pressable>
+      </Animated.View>
     </View>
   );
 }
