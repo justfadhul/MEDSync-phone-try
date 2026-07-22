@@ -3,6 +3,7 @@ import { Image, Pressable, Text, View } from "react-native";
 import { useRouter } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import Svg, { Path } from "react-native-svg";
+import { LinearGradient } from "expo-linear-gradient";
 import Animated, { FadeIn, FadeInDown, useReducedMotion } from "react-native-reanimated";
 import { tokens } from "@medsync/tokens";
 
@@ -16,6 +17,16 @@ import { tokens } from "@medsync/tokens";
 const ON_BRAND = tokens["content-on-brand"];
 const INK = tokens["content-primary"];
 const WHITE_20 = "rgba(255,255,255,0.2)";
+const GRAD: [string, string] = [tokens["brand-grad-from"], tokens["brand-grad-to"]];
+
+// Teal-tinted drop shadow for the primary button (matches the reference float).
+const btnShadow = {
+  shadowColor: tokens["brand-cta"],
+  shadowOpacity: 0.45,
+  shadowRadius: 18,
+  shadowOffset: { width: 0, height: 12 },
+  elevation: 12,
+};
 
 const DOCTOR = require("../assets/welcome/portrait-1.jpg");
 const NURSE = require("../assets/welcome/portrait-2.jpg");
@@ -109,15 +120,22 @@ export default function Welcome() {
           onPress={() => router.push("/onboarding")}
           accessibilityRole="button"
           accessibilityLabel="Get started"
-          className="bg-brand-primary h-14 flex-row items-center justify-center rounded-full active:opacity-90"
-          style={{ gap: 10 }}
+          className="active:opacity-90"
+          style={{ borderRadius: 9999, backgroundColor: GRAD[1], ...btnShadow }}
         >
-          <Text className="text-content-on-brand text-base font-semibold">Get started</Text>
-          <View style={{ width: 30, height: 30, borderRadius: 15, backgroundColor: WHITE_20, alignItems: "center", justifyContent: "center" }}>
-            <Svg width={17} height={17} viewBox="0 0 24 24" fill="none" stroke={ON_BRAND} strokeWidth={2.4} strokeLinecap="round" strokeLinejoin="round">
-              <Path d="M5 12h14M13 6l6 6-6 6" />
-            </Svg>
-          </View>
+          <LinearGradient
+            colors={GRAD}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={{ height: 56, borderRadius: 9999, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 10 }}
+          >
+            <Text className="text-content-on-brand text-base font-semibold">Get started</Text>
+            <View style={{ width: 30, height: 30, borderRadius: 15, backgroundColor: WHITE_20, alignItems: "center", justifyContent: "center" }}>
+              <Svg width={17} height={17} viewBox="0 0 24 24" fill="none" stroke={ON_BRAND} strokeWidth={2.4} strokeLinecap="round" strokeLinejoin="round">
+                <Path d="M5 12h14M13 6l6 6-6 6" />
+              </Svg>
+            </View>
+          </LinearGradient>
         </Pressable>
 
         <Pressable onPress={() => router.push("/sign-in")} accessibilityRole="button" hitSlop={8} className="mt-4 items-center active:opacity-70">

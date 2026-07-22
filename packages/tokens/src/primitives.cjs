@@ -46,7 +46,7 @@ const primitives = {
     900: "#26424B",
     950: "#172831",
     gradFrom: "#427791", // = teal-600; white text ≥4.9:1 across the whole sweep
-    gradTo: "#386577",
+    gradTo: "#2E5362", // = teal-800 (8.3:1) — a visible light→dark sweep, both AA
   },
 
   // Clinical emergency ONLY. Deliberately minimal so red cannot creep into
@@ -134,7 +134,7 @@ const primitives = {
   elevation: {
     soft: "0 24px 60px -24px rgba(23,40,49,0.28), 0 4px 12px -6px rgba(23,40,49,0.10)",
     float: "0 10px 24px -8px rgba(23,40,49,0.26), 0 2px 4px rgba(23,40,49,0.10)",
-    btn: "0 10px 22px -8px rgba(46,83,98,0.55), inset 0 1px 0 rgba(255,255,255,0.28)",
+    btn: "0 16px 30px -10px rgba(46,83,98,0.6), 0 4px 10px -4px rgba(46,83,98,0.4), inset 0 1px 0 rgba(255,255,255,0.28)",
     inset: "inset 0 1px 0 rgba(255,255,255,0.7), inset 0 -1px 0 rgba(23,40,49,0.04)",
   },
 };
