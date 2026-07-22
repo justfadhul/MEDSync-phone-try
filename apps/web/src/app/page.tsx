@@ -9,9 +9,9 @@ export const metadata: Metadata = {
 
 // Splash / welcome screen for the desktop app, in the teal + Poppins
 // "Startup House" style (IMG_8295 / IMG_8297). A neumorphic canvas with one
-// floating two-panel surface: message + primary action on the left, an honest
-// illustrative preview on the right. No fabricated social proof; the clinical
-// no-dose rule still holds (a med tile shows name + time + adherence, no dose).
+// floating two-panel surface: message + primary action on the left, a pictorial
+// section (portrait cluster + honest onboarding card) on the right. Photos are
+// illustrative brand imagery; the onboarding card states no fabricated count.
 
 function Wordmark({ className }: { className?: string }) {
   return (
@@ -38,19 +38,15 @@ function FloatTile({ d, className }: { d: string; className?: string }) {
   );
 }
 
-// One illustrative preview tile (pastel wayfinding tone — decorative, never a
-// clinical signal). Copy is sample data, marked as such on the cluster.
-function PreviewTile({
-  tone, label, value, meta,
-}: { tone: string; label: string; value: string; meta: string }) {
-  return (
-    <div className={`${tone} flex flex-col gap-1 rounded-2xl p-4`}>
-      <span className="text-content-secondary text-[11px] font-medium">{label}</span>
-      <span className="text-content-primary text-sm font-semibold">{value}</span>
-      <span className="text-content-tertiary text-[11px]">{meta}</span>
-    </div>
-  );
-}
+// The pictorial cluster (IMG_8295): three staggered portraits of Uganda's
+// medical community. SVG placeholders ship in /public/welcome — replace each
+// file with a realistic image (see the generation prompts) and, if you export
+// as .jpg, update the extension here. The centre card sits tallest and in front.
+const PORTRAITS = [
+  { src: "/welcome/portrait-1.svg", alt: "Illustrative portrait — a Ugandan doctor", cls: "z-10 mt-4 h-52 w-24 sm:h-56 sm:w-28" },
+  { src: "/welcome/portrait-2.svg", alt: "Illustrative portrait — a Ugandan nurse", cls: "z-20 h-56 w-24 sm:h-64 sm:w-28" },
+  { src: "/welcome/portrait-3.svg", alt: "Illustrative portrait — a community health worker", cls: "z-10 mt-8 h-48 w-24 sm:h-52 sm:w-28" },
+];
 
 export default function Welcome() {
   return (
@@ -102,38 +98,50 @@ export default function Welcome() {
             </p>
           </div>
 
-          {/* RIGHT — honest illustrative preview */}
+          {/* RIGHT — pictorial section (IMG_8295): a staggered portrait cluster
+              of Uganda's medical community, with the honest onboarding card
+              overlapping. Photos are illustrative brand imagery (swap the SVG
+              placeholders in /public/welcome for realistic images). */}
           <div className="bg-surface-tertiary relative flex flex-col p-8 sm:p-10">
             <h2 className="text-content-primary max-w-[16ch] text-xl font-bold tracking-tight">
               Care that follows the patient home.
             </h2>
 
-            <div className="mt-6 grid grid-cols-2 gap-3">
-              <PreviewTile tone="bg-tint-sky" label="Home reading" value="Capillary glucose" meta="6.4 mmol/L · 06:05" />
-              <PreviewTile tone="bg-tint-mint" label="Medication" value="Metformin · taken" meta="06:12 · confirmed" />
-              <PreviewTile tone="bg-tint-lavender" label="Care team" value="Dr. K. reviewed" meta="results · 08:14" />
-              <PreviewTile tone="bg-tint-peach" label="Next visit" value="Clinic follow-up" meta="in 12 days" />
-            </div>
+            <div className="relative mt-8 grow">
+              {/* portrait cluster */}
+              <div className="flex justify-center">
+                {PORTRAITS.map((pt, i) => (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    key={pt.src}
+                    src={pt.src}
+                    alt={pt.alt}
+                    className={`bg-surface-secondary rounded-[20px] object-cover shadow-md ${pt.cls} ${i > 0 ? "-ml-5" : ""}`}
+                  />
+                ))}
+              </div>
 
-            {/* honest stat card — no fabricated count */}
-            <div className="neu-float mt-5 flex items-start gap-3 rounded-2xl p-4">
-              <span className="bg-brand-subtle text-brand-primary grid h-9 w-9 flex-none place-items-center rounded-xl">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="h-5 w-5" aria-hidden="true">
-                  <circle cx="12" cy="12" r="9" /><path d="M3 12h18M12 3c2.5 2.6 3.8 5.7 3.8 9S14.5 18.4 12 21c-2.5-2.6-3.8-5.7-3.8-9S9.5 5.6 12 3Z" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </span>
-              <div>
-                <p className="text-content-primary text-sm font-semibold">Now onboarding founding hospitals</p>
-                <p className="text-content-secondary mt-0.5 text-xs">
-                  Kampala first — the founding cohort is open. Built for 3G, SMS, and mobile money.
-                </p>
+              {/* honest onboarding card — overlaps ON TOP of the cluster (z-30),
+                  no fabricated count */}
+              <div className="neu-float relative z-30 mt-5 flex items-start gap-3 rounded-2xl p-4 md:absolute md:-bottom-3 md:left-0 md:mt-0 md:max-w-[14rem]">
+                <span className="bg-brand-subtle text-brand-primary grid h-9 w-9 flex-none place-items-center rounded-xl">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="h-5 w-5" aria-hidden="true">
+                    <circle cx="12" cy="12" r="9" /><path d="M3 12h18M12 3c2.5 2.6 3.8 5.7 3.8 9S14.5 18.4 12 21c-2.5-2.6-3.8-5.7-3.8-9S9.5 5.6 12 3Z" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </span>
+                <div>
+                  <p className="text-content-primary text-sm font-semibold">Now onboarding founding hospitals</p>
+                  <p className="text-content-secondary mt-0.5 text-xs">
+                    Kampala first — the founding cohort is open.
+                  </p>
+                </div>
               </div>
             </div>
 
             <div className="mt-6 flex items-center justify-between">
               <span className="border-line-subtle text-content-tertiary inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 font-mono text-[10px] tracking-wider uppercase">
                 <span className="bg-content-tertiary h-1 w-1 rounded-full" />
-                Illustrative · sample data
+                Illustrative imagery
               </span>
               <Wordmark className="text-xs" />
             </div>
