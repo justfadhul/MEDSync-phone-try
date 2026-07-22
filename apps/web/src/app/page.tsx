@@ -68,12 +68,14 @@ export default function Welcome() {
           <div className="rise mt-10 flex flex-col gap-5 sm:flex-row sm:items-center" style={{ animationDelay: "0.34s" }}>
             <Link
               href="/get-started"
-              className="neu-btn group text-content-on-brand focus-visible:outline-brand-primary inline-flex h-14 items-center justify-center gap-2 rounded-full px-8 text-base font-semibold transition-[filter,transform,box-shadow] duration-200 hover:-translate-y-0.5 hover:brightness-[1.06] focus-visible:outline-2 focus-visible:outline-offset-2 active:translate-y-0"
+              className="neu-btn group text-content-on-brand focus-visible:outline-brand-primary inline-flex h-14 items-center gap-3 rounded-full py-0 pl-8 pr-2 text-base font-semibold transition-[filter,transform,box-shadow] duration-200 hover:-translate-y-0.5 hover:brightness-[1.06] focus-visible:outline-2 focus-visible:outline-offset-2 active:translate-y-0"
             >
               Get started
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5 transition-transform duration-200 group-hover:translate-x-0.5" aria-hidden="true">
-                <path d="M5 12h14M13 6l6 6-6 6" />
-              </svg>
+              <span className="grid h-11 w-11 place-items-center rounded-full transition-transform duration-200 group-hover:translate-x-0.5" style={{ backgroundColor: "rgba(255,255,255,0.22)" }}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5" aria-hidden="true">
+                  <path d="M5 12h14M13 6l6 6-6 6" />
+                </svg>
+              </span>
             </Link>
             <Link href="/sign-in" className="text-content-secondary hover:text-content-primary text-[15px] font-medium transition-colors">
               I already have an account
