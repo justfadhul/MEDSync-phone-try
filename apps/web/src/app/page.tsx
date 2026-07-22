@@ -31,9 +31,17 @@ function Wordmark({ className }: { className?: string }) {
 // medical community. Files live in /public/welcome. The centre card sits
 // tallest and in front.
 const PORTRAITS = [
-  { src: "/welcome/portrait-1.jpg", alt: "Illustrative portrait — a Ugandan doctor", cls: "z-10 mt-6 h-60 w-28 sm:h-72 sm:w-32" },
-  { src: "/welcome/portrait-2.jpg", alt: "Illustrative portrait — a Ugandan nurse", cls: "z-20 h-64 w-28 sm:h-80 sm:w-32" },
-  { src: "/welcome/portrait-3.jpg", alt: "Illustrative portrait — a community health worker", cls: "z-10 mt-12 h-56 w-28 sm:h-64 sm:w-32" },
+  { src: "/welcome/portrait-1.jpg", alt: "Illustrative portrait — a Ugandan doctor", cls: "z-10 mt-8 h-72 w-32 sm:h-[24rem] sm:w-40 lg:h-[26rem] lg:w-44" },
+  { src: "/welcome/portrait-2.jpg", alt: "Illustrative portrait — a Ugandan nurse", cls: "z-20 h-80 w-32 sm:h-[26rem] sm:w-40 lg:h-[30rem] lg:w-44" },
+  { src: "/welcome/portrait-3.jpg", alt: "Illustrative portrait — a community health worker", cls: "z-10 mt-16 h-64 w-32 sm:h-[22rem] sm:w-40 lg:h-[24rem] lg:w-44" },
+];
+
+// Real, load-bearing capabilities — a compact row that fills the left panel and
+// says what MedSync actually does (built for how Uganda's phones and money work).
+const FEATURES: { label: string; d: string }[] = [
+  { label: "Works offline", d: "M5 12.5 10 17l9-10M4 20h16" },
+  { label: "SMS reminders", d: "M21 15a2 2 0 0 1-2 2H8l-4 4V6a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2v9Z" },
+  { label: "Mobile money", d: "M2 8h20M2 8v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8M2 8l2-3h16l2 3M7 13h4" },
 ];
 
 export default function Welcome() {
@@ -47,33 +55,44 @@ export default function Welcome() {
           <span className="bg-brand-accent accent-sweep mt-4 block h-1 w-16 rounded-full" aria-hidden="true" />
         </div>
 
-        <div className="max-w-lg py-10">
-          <p className="rise text-content-tertiary text-sm font-medium" style={{ animationDelay: "0.1s" }}>👋 Welcome to MedSync</p>
-          <h1 className="rise text-content-primary mt-3 text-3xl font-bold leading-tight tracking-tight sm:text-4xl lg:text-5xl" style={{ animationDelay: "0.18s" }}>
+        <div className="max-w-xl py-10">
+          <p className="rise text-content-tertiary text-base font-medium" style={{ animationDelay: "0.1s" }}>👋 Welcome to MedSync</p>
+          <h1 className="rise text-content-primary mt-4 text-4xl font-bold leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl" style={{ animationDelay: "0.18s" }}>
             A digital hospital that doesn&rsquo;t stop at the gate.
           </h1>
-          <p className="rise text-content-secondary mt-5 max-w-md text-[15px]" style={{ animationDelay: "0.26s" }}>
-            One record for the whole hospital — wards, vitals, medications,
+          <p className="rise text-content-secondary mt-6 max-w-lg text-lg leading-relaxed" style={{ animationDelay: "0.26s" }}>
+            One record for the whole hospital — wards, vitals, medications and
             appointments — that stays open after the patient goes home.
           </p>
 
-          <div className="rise mt-9 flex flex-col gap-4 sm:flex-row sm:items-center" style={{ animationDelay: "0.34s" }}>
+          <div className="rise mt-10 flex flex-col gap-5 sm:flex-row sm:items-center" style={{ animationDelay: "0.34s" }}>
             <Link
               href="/get-started"
-              className="neu-btn group text-content-on-brand focus-visible:outline-brand-primary inline-flex h-12 items-center justify-center gap-2 rounded-full px-7 text-sm font-semibold transition-[filter,transform,box-shadow] duration-200 hover:-translate-y-0.5 hover:brightness-[1.06] focus-visible:outline-2 focus-visible:outline-offset-2 active:translate-y-0"
+              className="neu-btn group text-content-on-brand focus-visible:outline-brand-primary inline-flex h-14 items-center justify-center gap-2 rounded-full px-8 text-base font-semibold transition-[filter,transform,box-shadow] duration-200 hover:-translate-y-0.5 hover:brightness-[1.06] focus-visible:outline-2 focus-visible:outline-offset-2 active:translate-y-0"
             >
               Get started
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5 transition-transform duration-200 group-hover:translate-x-0.5" aria-hidden="true">
                 <path d="M5 12h14M13 6l6 6-6 6" />
               </svg>
             </Link>
-            <Link href="/sign-in" className="text-content-secondary hover:text-content-primary text-sm font-medium transition-colors">
+            <Link href="/sign-in" className="text-content-secondary hover:text-content-primary text-[15px] font-medium transition-colors">
               I already have an account
             </Link>
           </div>
+
+          <ul className="rise mt-12 flex flex-wrap gap-3" style={{ animationDelay: "0.42s" }}>
+            {FEATURES.map((f) => (
+              <li key={f.label} className="border-line-subtle text-content-secondary inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" className="text-brand-primary h-4 w-4" aria-hidden="true">
+                  <path d={f.d} />
+                </svg>
+                {f.label}
+              </li>
+            ))}
+          </ul>
         </div>
 
-        <p className="rise text-content-tertiary text-xs" style={{ animationDelay: "0.5s" }}>
+        <p className="rise text-content-tertiary text-sm" style={{ animationDelay: "0.5s" }}>
           Built by and for Uganda&rsquo;s medical community.
         </p>
       </div>
@@ -81,7 +100,7 @@ export default function Welcome() {
       {/* RIGHT — pictorial section: a staggered portrait cluster of Uganda's
           medical community, with the honest onboarding card overlapping. */}
       <div className="bg-surface-tertiary flex flex-col justify-between px-8 py-10 sm:px-14 sm:py-14">
-        <h2 className="rise text-content-primary max-w-[18ch] text-xl font-bold tracking-tight sm:text-2xl" style={{ animationDelay: "0.2s" }}>
+        <h2 className="rise text-content-primary max-w-[16ch] text-2xl font-bold tracking-tight sm:text-3xl lg:text-4xl" style={{ animationDelay: "0.2s" }}>
           Care that follows the patient home.
         </h2>
 
@@ -107,15 +126,15 @@ export default function Welcome() {
           </div>
 
           {/* honest onboarding card — overlaps ON TOP of the cluster (z-30) */}
-          <div className="neu-float rise relative z-30 mx-auto mt-5 flex items-start gap-3 rounded-2xl p-4 sm:absolute sm:bottom-4 sm:left-0 sm:mt-0 sm:max-w-[15rem]" style={{ animationDelay: "0.75s" }}>
-            <span className="bg-brand-subtle text-brand-primary grid h-9 w-9 flex-none place-items-center rounded-xl">
+          <div className="neu-float rise relative z-30 mx-auto mt-6 flex items-start gap-3 rounded-2xl p-5 sm:absolute sm:bottom-6 sm:left-0 sm:mt-0 sm:max-w-[17rem]" style={{ animationDelay: "0.75s" }}>
+            <span className="bg-brand-subtle text-brand-primary grid h-10 w-10 flex-none place-items-center rounded-xl">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="h-5 w-5" aria-hidden="true">
                 <circle cx="12" cy="12" r="9" /><path d="M3 12h18M12 3c2.5 2.6 3.8 5.7 3.8 9S14.5 18.4 12 21c-2.5-2.6-3.8-5.7-3.8-9S9.5 5.6 12 3Z" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </span>
             <div>
-              <p className="text-content-primary text-sm font-semibold">Now onboarding founding hospitals</p>
-              <p className="text-content-secondary mt-0.5 text-xs">
+              <p className="text-content-primary text-[15px] font-semibold">Now onboarding founding hospitals</p>
+              <p className="text-content-secondary mt-1 text-sm">
                 Kampala first — the founding cohort is open.
               </p>
             </div>
