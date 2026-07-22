@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Poppins } from "next/font/google";
 import { tokens } from "@medsync/tokens";
-import { ForceDesktopViewport } from "@/components/force-desktop-viewport";
 import "./globals.css";
 
 // Poppins is the brand typeface (IMG_8297). next/font self-hosts it at build
@@ -26,15 +25,9 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  // Desktop app: mobile responsiveness is intentionally DISABLED. The web build
-  // is a desktop surface; the mobile experience ships as the Expo app. A fixed
-  // layout-viewport width makes phone browsers render the scaled desktop layout
-  // instead of reflowing to a mobile view. (No initial/maximum scale so the
-  // browser fits 1280 to the device width and pinch-zoom still works.)
-  width: 1280,
-  // null (not omitted) cancels Next's default initial-scale=1, so the browser
-  // scales the 1280 layout to fit the device instead of rendering it 1:1.
-  initialScale: null as unknown as number,
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
   viewportFit: "cover",
   // Light theme only — value comes from the token layer, not a raw hex.
   // Dark is deliberately disabled (see @medsync/tokens flags.cjs).
@@ -50,7 +43,6 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${poppins.variable} h-full`}>
       <body className="bg-surface-page text-content-primary flex min-h-full flex-col font-sans antialiased">
-        <ForceDesktopViewport />
         {children}
       </body>
     </html>
